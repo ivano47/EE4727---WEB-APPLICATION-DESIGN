@@ -7,7 +7,9 @@ if (session_status() === PHP_SESSION_NONE) {
 $is_logged_in = isset($_SESSION['patient_id']);
 ?>
 <nav>
-    <a href="index.php" class="nav-logo">NTU Clinic</a>
+    <a href="index.php" class="nav-logo">
+        <img src="assets/qkntnoqkntnoqknt.webp" alt="NTU Clinic Logo">
+    </a>
     
     <ul class="nav-links">
         <li><a href="index.php">Home</a></li>
@@ -18,7 +20,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
     
     <div class="nav-buttons">
         <?php if ($is_logged_in): ?>
-            <a href="my_appointments.php" class="btn-secondary">My Appointments</a>
+            <a href="my_appointments.php" class="btn-primary">My Appointments</a>
             <a href="../includes/logout.php" class="btn-primary">Logout</a>
         <?php else: ?>
             <a href="schedule.php" class="btn-primary">Book Appointment</a>

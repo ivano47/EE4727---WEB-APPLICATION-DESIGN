@@ -7,7 +7,7 @@
     padding: 60px 0;
     padding-top: 40px;
     padding-bottom: 40px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #E8EDF5 0%, #D4DCE8 100%);
 }
 
 .hero-text {
@@ -18,7 +18,7 @@
 .hero-text h1 {
     font-size: 3em;
     margin-bottom: 20px;
-    color: #333;
+    color: #2A3A6A;
     line-height: 1.2;
 }
 
@@ -47,10 +47,10 @@
 }
 
 .hero-btn-primary {
-    background-color: #2196F3;
+    background-color: #C41E3A;
     color: white;
     padding: 15px 30px;
-    border: 2px solid #2196F3;
+    border: 2px solid #C41E3A;
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
@@ -61,17 +61,17 @@
 }
 
 .hero-btn-primary:hover {
-    background-color: #1976D2;
-    border-color: #1976D2;
+    background-color: #A01830;
+    border-color: #A01830;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
 }
 
 .hero-btn-secondary {
     background-color: #ffffff;
-    color: #2196F3;
+    color: #2A3A6A;
     padding: 15px 30px;
-    border: 2px solid #2196F3;
+    border: 2px solid #2A3A6A;
     border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
@@ -86,41 +86,75 @@
     transform: translateY(-2px);
 }
 
+.hero-btn-outline {
+    background-color: transparent;
+    color: #2A3A6A;
+    padding: 15px 30px;
+    border: 2px solid #2A3A6A;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.hero-btn-outline:hover {
+    background-color: #2A3A6A;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
 .info-cards-container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     gap: 20px;
     padding: 30px 0;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .info-card {
     flex: 1;
     min-width: 200px;
     max-width: 250px;
-    background-color: #ffffff;
+    background-color: transparent;
     padding: 30px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .info-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: none;
 }
 
 .info-card-icon {
-    font-size: 3em;
-    margin-bottom: 15px;
-    color: #2196F3;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    background-color: #78B461;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover .info-card-icon {
+    transform: scale(1.1);
 }
 
 .info-card h3 {
     font-size: 1.3em;
     margin-bottom: 10px;
-    color: #333;
+    color: #2A3A6A;
 }
 
 .info-card p {
@@ -130,6 +164,113 @@
 }
 
 /* Contact Section */
+.contact-footer-section {
+    background-color: #2A3A6A;
+    color: white;
+    padding: 60px 0;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.contact-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10%;
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.contact-left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.contact-right-column {
+    flex: 1;
+}
+
+.contact-info-block h4 {
+    color: white;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.contact-info-block p {
+    color: white;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.contact-right-column h4 {
+    color: white;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+}
+
+.contact-right-column form {
+    margin: 0;
+}
+
+.contact-right-column label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.contact-right-column input[type="text"],
+.contact-right-column input[type="email"],
+.contact-right-column textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.contact-right-column input::placeholder,
+.contact-right-column textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.contact-right-column input:focus,
+.contact-right-column textarea:focus {
+    outline: none;
+    border-color: #78B461;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.contact-right-column textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn-contact-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #C41E3A;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-contact-submit:hover {
+    background-color: #A01830;
+}
+
 .contact-section {
     display: flex;
     flex-wrap: wrap;
@@ -139,30 +280,13 @@
     box-shadow: none;
 }
 
-.contact-info {
-    flex: 1;
-    min-width: 300px;
-}
-
-.contact-info h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.contact-details {
-    margin: 20px 0;
-}
-
-.contact-details h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #2196F3;
-}
-
-.contact-details p {
-    margin: 5px 0;
-    color: #555;
+.contact-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 /* form*/
@@ -175,7 +299,7 @@
 .contact-form h3 {
     font-size: 1.5em;
     margin-bottom: 20px;
-    color: #333;
+    color: #2A3A6A;
 }
 
 .contact-form label {
@@ -202,7 +326,7 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
     outline: none;
-    border-color: #2196F3;
+    border-color: #C41E3A;
 }
 
 .contact-form textarea {
@@ -213,7 +337,7 @@
 .contact-form button {
     width: 100%;
     padding: 12px;
-    background-color: #2196F3;
+    background-color: #C41E3A;
     color: white;
     border: none;
     border-radius: 4px;
@@ -224,7 +348,7 @@
 }
 
 .contact-form button:hover {
-    background-color: #1976D2;
+    background-color: #A01830;
 }
 
 .services-section {
@@ -237,7 +361,7 @@
     text-align: center;
     font-size: 2.5em;
     margin-bottom: 40px;
-    color: #333;
+    color: #2A3A6A;
 }
 
 .services-grid {
@@ -247,14 +371,20 @@
 }
 
 .service-item {
-    background-color: #ffffff;
-    border-radius: 16px;
+    background-color: transparent;
+    border-radius: 8px;
     padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
+    border: 2px solid #eeeeee;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    border-color: #2A3A6A;
 }
 
 .service-item h3 {
-    color: #2196F3;
+    color: #C41E3A;
     margin-bottom: 10px;
 }
 
@@ -298,8 +428,68 @@
         padding: 40px 20px;
     }
     
+    .contact-footer-section {
+        padding: 40px 0;
+    }
+    
+    .contact-footer-container {
+        flex-direction: column;
+        padding: 0 5%;
+        gap: 40px;
+    }
+    
     .services-grid {
         grid-template-columns: 1fr;
     }
+    
+    .doctors-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Doctor Profile Cards */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.doctor-profile-card {
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.doctor-profile-card:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-headshot {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #78B461;
+}
+
+.doctor-headshot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #e0e0e0;
+}
+
+.doctor-profile-card h3 {
+    color: #2A3A6A;
+    margin-bottom: 5px;
+    font-size: 1.3em;
+}
+
+.doctor-specialty {
+    color: #C41E3A;
+    font-size: 1em;
+    font-weight: 500;
 }
 
