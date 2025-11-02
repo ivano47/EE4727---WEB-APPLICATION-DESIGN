@@ -94,7 +94,7 @@ $result = $stmt->get_result();
                         
                         if ($status === 'scheduled') {
                             // Reschedule button
-                            echo "<a href='reschedule.php?appointment_id=$appointment_id&doctor_id=$doctor_id' class='btn btn-primary'>Reschedule</a>";
+                            echo "<a href='schedule.php?reschedule_id=$appointment_id' class='btn btn-primary'>Reschedule</a>";
                             
                             // Cancel button
                             echo "<form action='../includes/cancel_appointment.php' method='POST' class='form-inline' onsubmit='return confirm(\"Are you sure you want to cancel this appointment?\");'>";

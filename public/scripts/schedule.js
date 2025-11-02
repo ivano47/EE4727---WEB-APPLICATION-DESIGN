@@ -3,6 +3,7 @@
 let selectedSlot = null;
 let selectedDateTime = null;
 let selectedDoctorId = null;
+let rescheduleId = null;
 
 // Scroll to schedule section if date or doctor was selected (preserves position after page reload)
 window.addEventListener('DOMContentLoaded', function() {
@@ -17,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function selectTimeSlot(button, datetime, doctorId, displayTime) {
+function selectTimeSlot(button, datetime, doctorId, displayTime, rescheduleIdParam) {
     // reset form
     const allButtons = document.querySelectorAll('.time-button:not(.booked)');
     allButtons.forEach(btn => btn.classList.remove('selected'));
@@ -26,6 +27,7 @@ function selectTimeSlot(button, datetime, doctorId, displayTime) {
     selectedSlot = button;
     selectedDateTime = datetime;
     selectedDoctorId = doctorId;
+    rescheduleId = rescheduleIdParam;
     
     // Show confirmation section
     showConfirmation(displayTime, datetime);
@@ -60,6 +62,7 @@ function showConfirmation(displayTime, datetime) {
         <form action="../includes/book.php" method="POST" style="margin: 0;">
             <input type="hidden" name="doctor_id" value="${selectedDoctorId}">
             <input type="hidden" name="appointment_time" value="${datetime}">
+            ${rescheduleId ? `<input type="hidden" name="reschedule_id" value="${rescheduleId}">` : ''}
             <button type="submit" class="confirm-button">Confirm Booking</button>
             <button type="button" class="cancel-selection-button" onclick="cancelSelection()">Cancel</button>
         </form>
@@ -82,4 +85,5 @@ function cancelSelection() {
     selectedSlot = null;
     selectedDateTime = null;
     selectedDoctorId = null;
+    rescheduleId = null;
 }

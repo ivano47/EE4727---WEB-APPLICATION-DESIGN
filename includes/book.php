@@ -37,60 +37,121 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $check_stmt->close();
     
-    //SQL INSERT STATEMENT HERE!
-    $stmt = $conn->prepare("INSERT INTO appointments (patient_id, doctor_id, appointment_time, status) VALUES (?, ?, ?, 'scheduled')");
-    $stmt->bind_param("iis", $patient_id, $doctor_id, $appointment_time);
+    // Check if this is a reschedule or new appointment
+    $reschedule_id = intval($_POST['reschedule_id'] ?? 0);
     
-    // run it
-    if ($stmt->execute()) {
-        $stmt->close();
+    if ($reschedule_id > 0) {
+        // This is a reschedule - UPDATE existing appointment NOT INSERT!!
+        $stmt = $conn->prepare("UPDATE appointments SET doctor_id = ?, appointment_time = ? WHERE id = ? AND patient_id = ?");
+        $stmt->bind_param("isii", $doctor_id, $appointment_time, $reschedule_id, $patient_id);
         
-        //patient email and appointment details for email
-        $email_query = $conn->prepare("SELECT p.email, p.full_name, d.name as doctor_name, d.specialty 
-                                       FROM patients p, doctors d 
-                                       WHERE p.id = ? AND d.id = ?");
-        $email_query->bind_param("ii", $patient_id, $doctor_id);
-        $email_query->execute();
-        $email_result = $email_query->get_result();
-        
-        if ($email_result->num_rows === 1) {
-            $details = $email_result->fetch_assoc();
-            $patient_email = $details['email'];
-            $patient_name = $details['full_name'];
-            $doctor_name = $details['doctor_name'];
-            $specialty = $details['specialty'];
+        // run it
+        if ($stmt->execute()) {
+            $stmt->close();
             
-            // Format appointment time (idk why but it returns unix timestamp sometimes ??)
-            $formatted_time = date('l, F j, Y \a\t g:i A', strtotime($appointment_time));
+            //patient email and appointment details for email
+            $email_query = $conn->prepare("SELECT p.email, p.full_name, d.name as doctor_name, d.specialty 
+                                           FROM patients p, doctors d 
+                                           WHERE p.id = ? AND d.id = ?");
+            $email_query->bind_param("ii", $patient_id, $doctor_id);
+            $email_query->execute();
+            $email_result = $email_query->get_result();
             
-            // Prepare email
-            $subject = "Appointment Confirmation - NTU Clinic";
-            $message = "Dear $patient_name,\n\n";
-            $message .= "Your appointment has been successfully scheduled.\n\n";
-            $message .= "Appointment Details:\n";
-            $message .= "Doctor: $doctor_name ($specialty)\n";
-            $message .= "Date & Time: $formatted_time\n\n";
-            $message .= "Please arrive 10 minutes early for check-in.\n\n";
-            $message .= "If you need to reschedule, please visit our website.\n\n";
-            $message .= "Thank you for choosing NTU Clinic!\n\n";
-            $message .= "Best regards,\n";
-            $message .= "NTU Clinic Team";
+            if ($email_result->num_rows === 1) {
+                $details = $email_result->fetch_assoc();
+                $patient_email = $details['email'];
+                $patient_name = $details['full_name'];
+                $doctor_name = $details['doctor_name'];
+                $specialty = $details['specialty'];
+                
+                // Format appointment time (idk why but it returns unix timestamp sometimes ??)
+                $formatted_time = date('l, F j, Y \a\t g:i A', strtotime($appointment_time));
+                
+                // Prepare email
+                $subject = "Appointment Rescheduled - NTU Clinic";
+                $message = "Dear $patient_name,\n\n";
+                $message .= "Your appointment has been successfully rescheduled.\n\n";
+                $message .= "New Appointment Details:\n";
+                $message .= "Doctor: $doctor_name ($specialty)\n";
+                $message .= "Date & Time: $formatted_time\n\n";
+                $message .= "Please arrive 10 minutes early for check-in.\n\n";
+                $message .= "If you need to reschedule again, please visit our website.\n\n";
+                $message .= "Thank you for choosing NTU Clinic!\n\n";
+                $message .= "Best regards,\n";
+                $message .= "NTU Clinic Team";
+                
+                // Send email function from email_config.php
+                send_clinic_email($patient_email, $subject, $message, $patient_name);
+            }
             
-            // Send email function from email_config.php
-            send_clinic_email($patient_email, $subject, $message, $patient_name);
+            $email_query->close();
+            $conn->close();
+            
+            // Redirect to my_appointments.php with rescheduled success message
+            header("Location: ../public/my_appointments.php?success=rescheduled");
+            exit();
+        } else {
+            $stmt->close();
+            $conn->close();
+            header("Location: ../public/schedule.php?error=booking_failed");
+            exit();
         }
-        
-        $email_query->close();
-        $conn->close();
-        
-        // Redirect to my_appointments.php
-        header("Location: ../public/my_appointments.php?success=booked");
-        exit();
     } else {
-        $stmt->close();
-        $conn->close();
-        header("Location: ../public/schedule.php?error=booking_failed");
-        exit();
+        // This is a new appointment - INSERT new record
+        $stmt = $conn->prepare("INSERT INTO appointments (patient_id, doctor_id, appointment_time, status) VALUES (?, ?, ?, 'scheduled')");
+        $stmt->bind_param("iis", $patient_id, $doctor_id, $appointment_time);
+        
+        // run it
+        if ($stmt->execute()) {
+            $stmt->close();
+            
+            //patient email and appointment details for email
+            $email_query = $conn->prepare("SELECT p.email, p.full_name, d.name as doctor_name, d.specialty 
+                                           FROM patients p, doctors d 
+                                           WHERE p.id = ? AND d.id = ?");
+            $email_query->bind_param("ii", $patient_id, $doctor_id);
+            $email_query->execute();
+            $email_result = $email_query->get_result();
+            
+            if ($email_result->num_rows === 1) {
+                $details = $email_result->fetch_assoc();
+                $patient_email = $details['email'];
+                $patient_name = $details['full_name'];
+                $doctor_name = $details['doctor_name'];
+                $specialty = $details['specialty'];
+                
+                // Format appointment time (idk why but it returns unix timestamp sometimes ??)
+                $formatted_time = date('l, F j, Y \a\t g:i A', strtotime($appointment_time));
+                
+                // Prepare email
+                $subject = "Appointment Confirmation - NTU Clinic";
+                $message = "Dear $patient_name,\n\n";
+                $message .= "Your appointment has been successfully scheduled.\n\n";
+                $message .= "Appointment Details:\n";
+                $message .= "Doctor: $doctor_name ($specialty)\n";
+                $message .= "Date & Time: $formatted_time\n\n";
+                $message .= "Please arrive 10 minutes early for check-in.\n\n";
+                $message .= "If you need to reschedule, please visit our website.\n\n";
+                $message .= "Thank you for choosing NTU Clinic!\n\n";
+                $message .= "Best regards,\n";
+                $message .= "NTU Clinic Team";
+                
+                // Send email function from email_config.php
+                send_clinic_email($patient_email, $subject, $message, $patient_name);
+            }
+            
+            $email_query->close();
+            $conn->close();
+            
+            // Redirect to my_appointments.php
+            header("Location: ../public/my_appointments.php?success=booked");
+            exit();
+        } else {
+            $stmt->close();
+            $conn->close();
+            header("Location: ../public/schedule.php?error=booking_failed");
+            exit();
+        }
     }
 } else {
     // If not POST request, redirect to appt page

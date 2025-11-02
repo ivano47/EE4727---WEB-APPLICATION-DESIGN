@@ -10,8 +10,27 @@ if (!isset($_SESSION['patient_id'])) {
     exit();
 }
 
+// Check if this is a reschedule request
+$reschedule_id = $_GET['reschedule_id'] ?? null;
+$doctor_id_to_select = null;
+
+if ($reschedule_id) {
+    // Query for doctor_id for the appointment to be rescheduled
+    $reschedule_query = "SELECT doctor_id FROM appointments WHERE id = ? AND patient_id = ?";
+    $reschedule_stmt = $conn->prepare($reschedule_query);
+    $reschedule_stmt->bind_param("ii", $reschedule_id, $_SESSION['patient_id']);
+    $reschedule_stmt->execute();
+    $reschedule_result = $reschedule_stmt->get_result();
+    
+    if ($reschedule_result->num_rows > 0) {
+        $appointment_data = $reschedule_result->fetch_assoc();
+        $doctor_id_to_select = $appointment_data['doctor_id'];
+    }
+    $reschedule_stmt->close();
+}
+
 // GET selected doctor and date from URL
-$selected_doctor = $_GET['doctor_id'] ?? null;
+$selected_doctor = $_GET['doctor_id'] ?? $doctor_id_to_select ?? null;
 $selected_date = $_GET['date'] ?? date('Y-m-d');
 
 // Get ALL doctors for dropdown
@@ -90,6 +109,9 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
         <div class="schedule-container" id="schedule-section">
             <!-- Doctor Selection -->
             <form action="schedule.php" method="GET" class="schedule-controls">
+                <?php if ($reschedule_id): ?>
+                    <input type="hidden" name="reschedule_id" value="<?php echo htmlspecialchars($reschedule_id); ?>">
+                <?php endif; ?>
                 <div class="doctor-select-container">
                     <label for="doctor">Select Doctor:</label>
                     <select name="doctor_id" id="doctor" onchange="this.form.submit()" required>
@@ -114,9 +136,9 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                         <div class="schedule-left-column">
                             <div class="calendar-section">
                                 <div class="calendar-header">
-                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $prev_month; ?>" class="btn-link">← Previous</a>
+                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $prev_month; ?><?php echo $reschedule_id ? '&reschedule_id=' . $reschedule_id : ''; ?>" class="btn-link">← Previous</a>
                                     <h3><?php echo date('F Y', strtotime($selected_date)); ?></h3>
-                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $next_month; ?>" class="btn-link">Next →</a>
+                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $next_month; ?><?php echo $reschedule_id ? '&reschedule_id=' . $reschedule_id : ''; ?>" class="btn-link">Next →</a>
                                 </div>
 
                                 <div class="calendar-grid">
@@ -148,7 +170,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                                         if ($is_available) {
                                             $selected_class = $is_selected ? 'selected' : '';
                                             echo '<div class="day">';
-                                            echo '<a href="schedule.php?doctor_id=' . $selected_doctor . '&date=' . $current_date . '" class="day-link ' . $selected_class . '">' . $day . '</a>';
+                                            echo '<a href="schedule.php?doctor_id=' . $selected_doctor . '&date=' . $current_date . ($reschedule_id ? '&reschedule_id=' . $reschedule_id : '') . '" class="day-link ' . $selected_class . '">' . $day . '</a>';
                                             echo '</div>';
                                         } else {
                                             echo '<div class="day disabled">' . $day . '</div>';
@@ -192,7 +214,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                                                         <small>Booked</small>
                                                       </div>';
                                             } else {
-                                                echo '<button type="button" class="time-button" onclick="selectTimeSlot(this, \'' . $appointment_datetime . '\', ' . $selected_doctor . ', \'' . $display_time . '\')">' 
+                                                echo '<button type="button" class="time-button" onclick="selectTimeSlot(this, \'' . $appointment_datetime . '\', ' . $selected_doctor . ', \'' . $display_time . '\', ' . ($reschedule_id ? $reschedule_id : 'null') . ')">' 
                                                      . $display_time . 
                                                      '</button>';
                                             }
