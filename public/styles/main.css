@@ -95,16 +95,17 @@ nav {
     background-color: #2196F3;
     color: white !important;
     text-decoration: none;
-    border-radius: 6px;
+    border: 2px solid #2196F3;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
     transition: all 0.3s ease;
-    border: none;
     cursor: pointer;
 }
 
 .btn-primary:hover {
     background-color: #1976D2;
+    border-color: #1976D2;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
     text-decoration: none;
@@ -113,11 +114,11 @@ nav {
 .btn-secondary {
     display: inline-block;
     padding: 10px 20px;
-    background-color: transparent;
-    color: #333 !important;
+    background-color: #ffffff;
+    color: #2196F3 !important;
     text-decoration: none;
-    border: 2px solid #333;
-    border-radius: 6px;
+    border: 2px solid #2196F3;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: bold;
     transition: all 0.3s ease;
@@ -125,9 +126,7 @@ nav {
 }
 
 .btn-secondary:hover {
-    background-color: #333;
-    color: white !important;
-    transform: translateY(-1px);
+    background-color: #f8f9fa;
     text-decoration: none;
 }
 
@@ -465,6 +464,51 @@ a:hover {
     table td {
         padding: 8px;
     }
+}
+
+.contact-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+.contact-left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-right-column {
+    flex: 1;
+}
+
+/* spacing adjustments */
+.hero-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.meet-doctors-card {
+    text-align: center;
+}
+
+.contact-form-column input,
+.contact-form-column textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.contact-form-column label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 

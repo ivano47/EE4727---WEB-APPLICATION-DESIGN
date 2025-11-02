@@ -95,71 +95,61 @@ $is_logged_in = isset($_SESSION['patient_id']);
             </div>
         </section>
 
-        <section class="card" style="text-align: center; padding: 60px 0;">
+        <section class="card meet-doctors-card" style="padding: 60px 0;">
             <h2 style="font-size: 2.5em; margin-bottom: 20px; color: #333;">Meet Our Doctors</h2>
             <p style="font-size: 1.2em; color: #666; margin-bottom: 30px;">Our team of experienced healthcare professionals is dedicated to providing you with the highest quality care.</p>
-            <a href="doctors.php" class="hero-btn-primary">View Our Team</a>
+            <a href="doctors.php" class="btn-secondary">View Our Team</a>
         </section>
     </div>
 
-    <section id="contact" class="contact-section">
-        <div class="container card" style="display: flex; flex-wrap: wrap; gap: 40px; width: 100%;">
-            <!-- Contact Information -->
-            <div class="contact-info">
-                <h2>Get In Touch</h2>
-                <p>We are here to answer your questions and schedule your appointments.</p>
-                
-                <div class="contact-details">
-                    <h3>📍 Visit Our Clinic</h3>
-                    <p>50 Nanyang Avenue<br>
-                    Singapore 639798</p>
+    <div class="container">
+        <section id="contact" class="contact-section">
+            <div class="contact-left-column">
+                <div class="card">
+                    <h4>📍 Visit Our Clinic</h4>
+                    <p>50 Nanyang Avenue<br>Singapore 639798</p>
                 </div>
                 
-                <div class="contact-details">
-                    <h3>📞 Contact Information</h3>
-                    <p><strong>Phone:</strong> +65 6791 1234<br>
-                    <strong>Email:</strong> info@ntuclinic.com</p>
+                <div class="card">
+                    <h4>📞 Contact Information</h4>
+                    <p><strong>Phone:</strong> +65 6791 1234</p>
+                    <p><strong>Email:</strong> info@ntuclinic.com</p>
+                    <p><strong>Emergency:</strong> Call 995</p>
                 </div>
                 
-                <div class="contact-details">
-                    <h3>🕐 Operating Hours</h3>
-                    <p>
-                        <strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM<br>
-                        <strong>Saturday:</strong> 9:00 AM - 2:00 PM<br>
-                        <strong>Sunday:</strong> Closed
-                    </p>
-                </div>
-                
-                <div class="contact-details">
-                    <h3>🚨 Emergency Services</h3>
-                    <p>For medical emergencies, please call <strong>995</strong> or visit the nearest hospital emergency department.</p>
+                <div class="card">
+                    <h4>🕐 Operating Hours</h4>
+                    <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                    <p><strong>Saturday:</strong> 9:00 AM - 2:00 PM</p>
+                    <p><strong>Sunday:</strong> Closed</p>
                 </div>
             </div>
             
-            <!-- Contact Form -->
-            <div class="contact-form">
-                <h3>Send Us a Message</h3>
-                <form action="../includes/contact_form.php" method="POST">
-                    <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required>
-                    
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required>
-                    
-                    <label for="email">Email Address:</label>
-                    <input type="email" id="email" name="email" required>
-                    
-                    <label for="subject">Subject:</label>
-                    <input type="text" id="subject" name="subject" required>
-                    
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                    
-                    <button type="submit">Send Message</button>
-                </form>
+            <div class="contact-right-column contact-form-column">
+                <div class="card">
+                    <h4>✉️ Send Us a Message</h4>
+                    <form action="../includes/contact_form.php" method="POST">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                        
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                        
+                        <label for="email">Email Address:</label>
+                        <input type="email" id="email" name="email" required>
+                        
+                        <label for="subject">Subject:</label>
+                        <input type="text" id="subject" name="subject" required>
+                        
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer style="background-color: #ffffff; color: #333; text-align: center; padding: 20px 0; margin-top: 0; border-top: 1px solid #e0e0e0;">
