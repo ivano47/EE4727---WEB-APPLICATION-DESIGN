@@ -294,6 +294,17 @@ input[type="submit"]:hover {
 .doctor-card {
     margin-bottom: 30px;
     overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .doctor-card h2 {
@@ -303,6 +314,10 @@ input[type="submit"]:hover {
 .doctor-card h3 {
     color: #C41E3A;
     margin-top: 0;
+}
+
+.doctor-info {
+    flex: 1;
 }
 
 .alert {
@@ -504,21 +519,6 @@ a:hover {
 
 .meet-doctors-card {
     text-align: center;
-}
-
-.contact-form-column input,
-.contact-form-column textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.contact-form-column label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
 }
 
 /* Footer */
