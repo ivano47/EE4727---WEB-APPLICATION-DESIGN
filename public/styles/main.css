@@ -28,28 +28,34 @@ img {
     border-radius: 4px;
 }
 
-
 nav {
     background-color: #333;
-    padding: 15px 0;
+    padding: 15px 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Modern Nav Components */
 .nav-logo {
-    color: white;
     font-size: 1.5em;
     font-weight: bold;
+    color: white;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-logo:hover {
+    color: skyblue;
 }
 
 .nav-links {
     display: flex;
+    gap: 20px;
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 20px;
 }
 
 .nav-links li {
@@ -61,7 +67,7 @@ nav {
     text-decoration: none;
     font-size: 16px;
     padding: 8px 15px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     border-radius: 4px;
 }
 
@@ -72,61 +78,50 @@ nav {
 .nav-buttons {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
-.nav-button {
-    padding: 8px 20px;
+.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
     background-color: #2196F3;
-    color: white;
+    color: white !important;
     text-decoration: none;
     border-radius: 6px;
     font-size: 14px;
     font-weight: bold;
     transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 
-.nav-button:hover {
+.btn-primary:hover {
     background-color: #1976D2;
     transform: translateY(-1px);
-}
-
-.nav-button.secondary {
-    background-color: transparent;
-    border: 2px solid white;
-}
-
-.nav-button.secondary:hover {
-    background-color: white;
-    color: #333;
-}
-
-/* Legacy nav for other pages */
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-
-nav ul li {
-    display: inline-block;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
     text-decoration: none;
-    font-size: 16px;
-    padding: 10px 15px;
-    display: block;
-    transition: background-color 0.3s ease;
 }
 
-nav ul li a:hover {
-    background-color: #555;
-    border-radius: 4px;
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white !important;
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
+.btn-secondary:hover {
+    background-color: white;
+    color: #333 !important;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
 
 h1, h2, h3 {
     color: #333;
@@ -422,6 +417,33 @@ a:hover {
         margin: 5px 0;
     }
     
+
+    nav {
+        flex-direction: column;
+        padding: 15px 5%;
+        gap: 15px;
+    }
+    
+    .nav-logo {
+        font-size: 1.3em;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .nav-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
     .doctor-image {
         float: none;
         margin: 0 auto 20px;
@@ -436,4 +458,10 @@ a:hover {
         padding: 8px;
     }
 }
+
+
+
+
+
+
 

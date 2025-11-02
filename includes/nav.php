@@ -7,16 +7,22 @@ if (session_status() === PHP_SESSION_NONE) {
 $is_logged_in = isset($_SESSION['patient_id']);
 ?>
 <nav>
-    <ul>
+    <a href="index.php" class="nav-logo">NTU Clinic</a>
+    
+    <ul class="nav-links">
         <li><a href="index.php">Home</a></li>
         <li><a href="doctors.php">Our Doctors</a></li>
         <li><a href="schedule.php">Appointments</a></li>
         <li><a href="index.php#contact">Contact</a></li>
-        <?php if ($is_logged_in): ?>
-            <li><a href="my_appointments.php">My Appointments</a></li>
-            <li><a href="../includes/logout.php">Logout</a></li>
-        <?php else: ?>
-            <li><a href="login.php">Login</a></li>
-        <?php endif; ?>
     </ul>
+    
+    <div class="nav-buttons">
+        <?php if ($is_logged_in): ?>
+            <a href="my_appointments.php" class="btn-secondary">My Appointments</a>
+            <a href="../includes/logout.php" class="btn-primary">Logout</a>
+        <?php else: ?>
+            <a href="schedule.php" class="btn-primary">Book Appointment</a>
+            <a href="login.php" class="btn-secondary">Login</a>
+        <?php endif; ?>
+    </div>
 </nav>
