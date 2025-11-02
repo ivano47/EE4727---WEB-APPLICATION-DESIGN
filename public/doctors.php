@@ -29,7 +29,6 @@
                     <a href="login.php" class="btn-primary mt-10">Login to Book with Dr. Tan</a>
                 <?php endif; ?>
             </div>
-            <div class="clearfix"></div>
         </div>
 
         <div class="doctor-card">
@@ -45,7 +44,6 @@
                     <a href="login.php" class="btn-primary mt-10">Login to Book with Dr. Chen</a>
                 <?php endif; ?>
             </div>
-            <div class="clearfix"></div>
         </div>
 
         <div class="doctor-card">
@@ -61,7 +59,6 @@
                     <a href="login.php" class="btn-primary mt-10">Login to Book with Dr. Wong</a>
                 <?php endif; ?>
             </div>
-            <div class="clearfix"></div>
         </div>
 
         <div class="doctor-card">
@@ -77,7 +74,6 @@
                     <a href="login.php" class="btn-primary mt-10">Login to Book with Dr. Lim</a>
                 <?php endif; ?>
             </div>
-            <div class="clearfix"></div>
         </div>
 
         <div class="mt-30 text-center">

@@ -271,86 +271,6 @@
     background-color: #A01830;
 }
 
-.contact-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 0;
-    background-color: transparent;
-    box-shadow: none;
-}
-
-.contact-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 0;
-    background-color: transparent;
-    box-shadow: none;
-}
-
-/* form*/
-.contact-form {
-    flex: 1;
-    min-width: 300px;
-    padding: 0;
-}
-
-.contact-form h3 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    color: #2A3A6A;
-}
-
-.contact-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 14px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: #C41E3A;
-}
-
-.contact-form textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.contact-form button {
-    width: 100%;
-    padding: 12px;
-    background-color: #C41E3A;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.contact-form button:hover {
-    background-color: #A01830;
-}
-
 .services-section {
     padding: 30px 0;
     background-color: transparent;
@@ -421,11 +341,6 @@
     
     .info-card {
         max-width: 100%;
-    }
-    
-    .contact-section {
-        flex-direction: column;
-        padding: 40px 20px;
     }
     
     .contact-footer-section {
