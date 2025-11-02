@@ -1,0 +1,177 @@
+.schedule-container {
+    width: 90%;
+    margin: auto;
+}
+
+.schedule-controls {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.schedule-controls h3 {
+    margin-top: 0;
+}
+
+.doctor-select-container {
+    margin-bottom: 20px;
+}
+
+.doctor-select-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.doctor-select-container select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.day-name {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
+
+.day {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day.empty {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+}
+
+.day.disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.day-link {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.day-link:hover {
+    background-color: #2196F3;
+    color: white;
+}
+
+.day-link.selected {
+    background-color: #2196F3;
+    color: white;
+    font-weight: bold;
+}
+
+.timeslot-container {
+    margin-top: 30px;
+}
+
+.timeslot-container h3 {
+    margin-bottom: 20px;
+}
+
+.timeslot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-button {
+    padding: 12px 20px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+    color: black;
+}
+
+.time-button:hover {
+    background-color: #2196F3;
+    color: white;
+    border-color: #2196F3;
+}
+
+.time-button.booked {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #e0e0e0;
+}
+
+.time-button.booked:hover {
+    background-color: #f5f5f5;
+    color: #999;
+}
+
+.no-slots {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-style: italic;
+}
+
+/* media query (havent tested mobile) */
+@media (max-width: 768px) {
+    .schedule-container {
+        width: 95%;
+    }
+    
+    .calendar-grid {
+        gap: 3px;
+    }
+    
+    .day {
+        padding: 10px;
+        min-height: 50px;
+        font-size: 12px;
+    }
+    
+    .day-name {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .timeslot-grid {
+        gap: 8px;
+    }
+    
+    .time-button {
+        min-width: 100%;
+        margin: 0;
+    }
+}
+
