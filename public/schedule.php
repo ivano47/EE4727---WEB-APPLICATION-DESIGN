@@ -104,7 +104,11 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
 
     <div class="container">
         <h1>Schedule an Appointment</h1>
-        <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! Select a doctor and date to view available time slots.</p>
+        <?php if ($reschedule_id): ?>
+            <p>You are rescheduling your appointment. Please select a new date and time.</p>
+        <?php else: ?>
+            <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! Select a doctor and date to view available time slots.</p>
+        <?php endif; ?>
 
         <div class="schedule-container" id="schedule-section">
             <!-- Doctor Selection -->
@@ -114,7 +118,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                 <?php endif; ?>
                 <div class="doctor-select-container">
                     <label for="doctor">Select Doctor:</label>
-                    <select name="doctor_id" id="doctor" onchange="this.form.submit()" required>
+                    <select name="doctor_id" id="doctor" onchange="this.form.submit()" required <?php if (isset($_GET['reschedule_id'])): ?>disabled<?php endif; ?>>
                         <option value="">-- Choose a Doctor --</option>
                         <?php
                         if ($doctors_result->num_rows > 0) {
@@ -127,6 +131,9 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                         }
                         ?>
                     </select>
+                    <?php if (isset($_GET['reschedule_id'])): ?>
+                        <input type="hidden" name="doctor_id" value="<?php echo htmlspecialchars($doctor_id_to_select); ?>">
+                    <?php endif; ?>
                 </div>
             </form>
 
@@ -188,7 +195,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                                     $day_of_week = date('l', strtotime($selected_date));
                                     
                                     if (isset($doctor_schedule[$day_of_week])) {
-                                        echo "<h3>Available Time Slots for Dr. " . htmlspecialchars($doctor_name) . " on " . date('F j, Y', strtotime($selected_date)) . "</h3>";
+                                        echo "<h3>Available Time Slots for " . htmlspecialchars($doctor_name) . " on " . date('F j, Y', strtotime($selected_date)) . "</h3>";
                                         
                                         $start_time = new DateTime($doctor_schedule[$day_of_week]['start_time']);
                                         $end_time = new DateTime($doctor_schedule[$day_of_week]['end_time']);
@@ -228,7 +235,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                                             echo '<div class="no-slots">No time slots available for this date.</div>';
                                         }
                                     } else {
-                                        echo '<div class="no-slots">Dr. ' . htmlspecialchars($doctor_name) . ' is not available on ' . date('l, F j, Y', strtotime($selected_date)) . '</div>';
+                                        echo '<div class="no-slots"> ' . htmlspecialchars($doctor_name) . ' is not available on ' . date('l, F j, Y', strtotime($selected_date)) . '</div>';
                                     }
                                     ?>
                                 </div>
