@@ -7,15 +7,7 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="doctors.html">Our Doctors</a></li>
-            <li><a href="schedule.php">Appointments</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
+    <?php include '../includes/nav.php'; ?>
 
     <div class="container">
         <h1>Patient Registration</h1>
@@ -38,7 +30,7 @@
         </form>
 
         <p style="text-align: center; margin-top: 20px;">
-            Already have an account? <a href="login.html">Login here</a>
+            Already have an account? <a href="login.php">Login here</a>
         </p>
     </div>
 </body>

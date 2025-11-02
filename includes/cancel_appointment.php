@@ -5,7 +5,7 @@ session_start();
 require_once 'db_connect.php';
 
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: ../public/login.html");
+    header("Location: ../public/login.php");
     exit();
 }
 

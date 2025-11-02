@@ -35,16 +35,7 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="styles/table.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="doctors.html">Our Doctors</a></li>
-            <li><a href="schedule.php">Appointments</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="my_appointments.php">My Appointments</a></li>
-            <li><a href="../includes/logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <?php include '../includes/nav.php'; ?>
 
     <div class="container">
         <h1>My Upcoming Appointments</h1>

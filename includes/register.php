@@ -12,19 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Server-side validation
     // Check if ANY fields are empty
     if (empty($full_name) || empty($email) || empty($password) || empty($confirm_password)) {
-        header("Location: ../public/register.html?error=empty_fields");
+        header("Location: ../public/register.php?error=empty_fields");
         exit();
     }
     
     // Check if passwords match
     if ($password !== $confirm_password) {
-        header("Location: ../public/register.html?error=password_mismatch");
+        header("Location: ../public/register.php?error=password_mismatch");
         exit();
     }
     
     // check email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../public/register.html?error=invalid_email");
+        header("Location: ../public/register.php?error=invalid_email");
         exit();
     }
     
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($check_stmt->num_rows > 0) {
         $check_stmt->close();
-        header("Location: ../public/register.html?error=email_exists");
+        header("Location: ../public/register.php?error=email_exists");
         exit();
     }
     $check_stmt->close();
@@ -53,18 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
         $conn->close();
         // Redirect to login page on success
-        header("Location: ../public/login.html?success=registered");
+        header("Location: ../public/login.php?success=registered");
         exit();
     } else {
         $stmt->close();
         $conn->close();
         // Redirect back with error
-        header("Location: ../public/register.html?error=registration_failed");
+        header("Location: ../public/register.php?error=registration_failed");
         exit();
     }
 } else {
     // If not POST request, redirect to register page
-    header("Location: ../public/register.html");
+    header("Location: ../public/register.php");
     exit();
 }
 ?>

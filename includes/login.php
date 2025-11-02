@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Server-side validation
     // Check if any fields are empty
     if (empty($email) || empty($password)) {
-        header("Location: ../public/login.html?error=empty_fields");
+        header("Location: ../public/login.php?error=empty_fields");
         exit();
     }
     
@@ -40,19 +40,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Password incorrect
             $stmt->close();
             $conn->close();
-            header("Location: ../public/login.html?error=invalid_credentials");
+            header("Location: ../public/login.php?error=invalid_credentials");
             exit();
         }
     } else {
         // User not found
         $stmt->close();
         $conn->close();
-        header("Location: ../public/login.html?error=invalid_credentials");
+        header("Location: ../public/login.php?error=invalid_credentials");
         exit();
     }
 } else {
     // If not POST request, redirect to login page
-    header("Location: ../public/login.html");
+    header("Location: ../public/login.php");
     exit();
 }
 ?>

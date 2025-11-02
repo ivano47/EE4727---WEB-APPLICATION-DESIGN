@@ -8,7 +8,7 @@ require_once 'email_config.php';
 
 // Check if user is logged in, if not redirect to login page, SESSION VARIABLE!
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: ../public/login.html");
+    header("Location: ../public/login.php");
     exit();
 }
 

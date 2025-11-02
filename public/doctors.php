@@ -7,15 +7,7 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="doctors.html">Our Doctors</a></li>
-            <li><a href="schedule.php">Appointments</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
+    <?php include '../includes/nav.php'; ?>
 
     <div class="container">
         <h1>Our Doctors</h1>
@@ -65,7 +57,7 @@
 
         <div style="margin-top: 30px; text-align: center;">
             <p><strong>Ready to book an appointment?</strong></p>
-            <a href="login.html" style="display: inline-block; padding: 12px 30px; background-color: #333; color: white; text-decoration: none; border-radius: 4px; margin-top: 10px;">Login to Schedule</a>
+            <a href="login.php" style="display: inline-block; padding: 12px 30px; background-color: #333; color: white; text-decoration: none; border-radius: 4px; margin-top: 10px;">Login to Schedule</a>
         </div>
     </div>
 </body>
