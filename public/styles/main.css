@@ -132,7 +132,8 @@ nav {
 }
 
 .btn-secondary:hover {
-    background-color: #f8f9fa;
+    background-color: #2A3A6A;
+    color: #ffffff !important;
     text-decoration: none;
 }
 
