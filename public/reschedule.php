@@ -68,7 +68,6 @@ $booked_stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reschedule Appointment - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/table.css">
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>

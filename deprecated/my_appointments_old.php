@@ -32,6 +32,7 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Appointments - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/table.css">
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>
@@ -83,13 +84,7 @@ $result = $stmt->get_result();
                         echo "<td>$doctor_name</td>";
                         echo "<td>$specialty</td>";
                         echo "<td>$appointment_time</td>";
-                        
-                        if ($status === 'cancelled') {
-                            echo "<td><span class='status-cancelled'>" . ucfirst($status) . "</span></td>";
-                        } else {
-                            echo "<td>" . ucfirst($status) . "</td>";
-                        }
-                        
+                        echo "<td>" . ucfirst($status) . "</td>";
                         echo "<td>";
                         
                         if ($status === 'scheduled') {
@@ -99,7 +94,7 @@ $result = $stmt->get_result();
                             // Cancel button
                             echo "<form action='../includes/cancel_appointment.php' method='POST' class='form-inline' onsubmit='return confirm(\"Are you sure you want to cancel this appointment?\");'>";
                             echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
-                            echo "<input type='submit' value='Cancel' class='btn btn-cancel btn-submit'>";
+                            echo "<input type='submit' value='Cancel' class='btn btn-danger btn-submit'>";
                             echo "</form>";
                         } else {
                             echo "<span class='text-muted'>-</span>";
