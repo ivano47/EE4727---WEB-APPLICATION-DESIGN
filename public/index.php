@@ -60,35 +60,35 @@ $is_logged_in = isset($_SESSION['patient_id']);
             </div>
         </section>
 
-        <section class="services-section card">
+        <section class="services-section">
             <h2>Our Services</h2>
             <div class="services-grid">
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>Family Medicine</h3>
                     <p>Comprehensive primary care for patients of all ages, from routine check-ups to chronic disease management.</p>
                 </div>
                 
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>Preventive Care</h3>
                     <p>Regular health screenings, vaccinations, and wellness programs to keep you healthy.</p>
                 </div>
                 
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>General Dentistry</h3>
                     <p>Complete dental care including cleanings, fillings, and oral health maintenance.</p>
                 </div>
                 
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>Cosmetic Dentistry</h3>
                     <p>Professional teeth whitening, veneers, and smile makeovers to boost your confidence.</p>
                 </div>
                 
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>Dental Implants</h3>
                     <p>Advanced tooth replacement solutions for a natural-looking, permanent smile.</p>
                 </div>
                 
-                <div class="service-item">
+                <div class="service-item card">
                     <h3>Emergency Care</h3>
                     <p>Prompt treatment for urgent medical and dental issues when you need it most.</p>
                 </div>

@@ -480,10 +480,12 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 300px;
 }
 
 .contact-right-column {
     flex: 1;
+    min-width: 300px;
 }
 
 /* spacing adjustments */

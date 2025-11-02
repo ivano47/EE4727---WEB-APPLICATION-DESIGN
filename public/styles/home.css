@@ -133,8 +133,10 @@
 .contact-section {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 20px;
     padding: 0;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .contact-info {
@@ -227,6 +229,8 @@
 
 .services-section {
     padding: 30px 0;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .services-section h2 {
@@ -243,10 +247,10 @@
 }
 
 .service-item {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    border-left: 4px solid #2196F3;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .service-item h3 {
