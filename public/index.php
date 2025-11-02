@@ -173,7 +173,31 @@ $is_logged_in = isset($_SESSION['patient_id']);
             
             <div class="contact-right-column">
                 <h4>✉️ Send Us a Message</h4>
+                
+                <?php if (isset($_GET['success']) && $_GET['success'] === 'message_sent'): ?>
+                    <div style="padding: 15px; margin-bottom: 15px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
+                        ✓ Thank you! Your message has been sent successfully.
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_GET['error'])): ?>
+                    <div style="padding: 15px; margin-bottom: 15px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+                        <?php
+                        $error = $_GET['error'];
+                        if ($error === 'empty_fields') {
+                            echo '✗ Please fill in all required fields.';
+                        } elseif ($error === 'invalid_email') {
+                            echo '✗ Please enter a valid email address.';
+                        } else {
+                            echo '✗ An error occurred. Please try again.';
+                        }
+                        ?>
+                    </div>
+                <?php endif; ?>
+                
                 <form action="../includes/contact_form.php" method="POST">
+                    <input type="hidden" name="redirect_page" value="index">
+                    
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
                     

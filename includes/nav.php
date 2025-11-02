@@ -15,7 +15,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
         <li><a href="index.php">Home</a></li>
         <li><a href="doctors.php">Our Doctors</a></li>
         <li><a href="schedule.php">Appointments</a></li>
-        <li><a href="index.php#contact">Contact</a></li>
+        <li><a href="contact.php">Contact</a></li>
     </ul>
     
     <div class="nav-buttons">
