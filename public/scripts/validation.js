@@ -6,11 +6,13 @@ function validateRegistrationForm() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm_password').value;
+    
     // Check if full name is empty
     if (fullName === '') {
         alert('Please enter your full name.');
         return false;
     }
+    
     // Check if full name has at least 2 characters??
     if (fullName.length < 2) {
         alert('Full name must be at least 2 characters long.');
@@ -27,8 +29,8 @@ function validateRegistrationForm() {
         alert('Please enter your email address.');
         return false;
     }
-    // Validate email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Validate email format (allow @localhost for development)
+    const emailPattern = /^[^\s@]+@[^\s@]+(\.[^\s@]+)?$/;
     if (!emailPattern.test(email)) {
         alert('Please enter a valid email address.');
         return false;
@@ -60,13 +62,14 @@ function validateRegistrationForm() {
 function validateLoginForm() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
+    
     // Check if email is empty
     if (email === '') {
         alert('Please enter your email address.');
         return false;
     }
-    // Validate email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Validate email format (allow @localhost for development)
+    const emailPattern = /^[^\s@]+@[^\s@]+(\.[^\s@]+)?$/;
     if (!emailPattern.test(email)) {
         alert('Please enter a valid email address.');
         return false;
@@ -109,6 +112,7 @@ function displayErrorMessage() {
             default:
                 message = 'An error occurred. Please try again.';
         }
+        
         showMessage(message, 'error');
     }
     
@@ -121,7 +125,7 @@ function displayErrorMessage() {
             default:
                 message = 'Operation successful!';
         }
-        //Maybe implement email verification success message later????????????????????🛠️
+        
         showMessage(message, 'success');
     }
 }

@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     
-    // check email format
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Check email format (allow @localhost for development)
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) && !preg_match('/^[^\s@]+@localhost$/', $email)) {
         header("Location: ../public/register.php?error=invalid_email");
         exit();
     }
