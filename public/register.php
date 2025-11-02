@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Registration - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/validation.js"></script>
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>
@@ -13,7 +14,7 @@
         <h1>Patient Registration</h1>
         <p>Create an account to book appointments with our doctors.</p>
 
-        <form action="../includes/register.php" method="POST">
+        <form action="../includes/register.php" method="POST" onsubmit="return validateRegistrationForm()">
             <label for="full_name">Full Name:</label>
             <input type="text" id="full_name" name="full_name" required>
 

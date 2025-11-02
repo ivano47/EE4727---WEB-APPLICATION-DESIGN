@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NTU Clinic - Home</title>
     <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/smooth-scroll.js"></script>
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>

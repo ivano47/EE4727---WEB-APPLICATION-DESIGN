@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Login - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/validation.js"></script>
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>
@@ -13,7 +14,7 @@
         <h1>Patient Login</h1>
         <p>Login to your account to manage appointments.</p>
 
-        <form action="../includes/login.php" method="POST">
+        <form action="../includes/login.php" method="POST" onsubmit="return validateLoginForm()">
             <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" required>
 
