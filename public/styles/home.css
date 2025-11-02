@@ -227,26 +227,26 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-family: inherit;
     font-size: 14px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
+    background-color: #f1f1f1;
+    color: #333;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .contact-right-column input::placeholder,
 .contact-right-column textarea::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: #999;
 }
 
 .contact-right-column input:focus,
 .contact-right-column textarea:focus {
     outline: none;
-    border-color: #78B461;
-    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #C41E3A;
+    background-color: #ffffff;
 }
 
 .contact-right-column textarea {
@@ -372,15 +372,15 @@
 
 .service-item {
     background-color: transparent;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 24px;
     box-shadow: none;
-    border: 2px solid #eeeeee;
+    border: none;
     transition: all 0.3s ease;
 }
 
 .service-item:hover {
-    border-color: #2A3A6A;
+    transform: translateY(-3px);
 }
 
 .service-item h3 {

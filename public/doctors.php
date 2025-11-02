@@ -67,6 +67,10 @@
             <?php endif; ?>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
+    </footer>
 </body>
 </html>
 

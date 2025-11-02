@@ -161,6 +161,10 @@ $booked_stmt->close();
             <a href="my_appointments.php" class="btn-link">← Back to My Appointments</a>
         </p>
     </div>
+
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
+    </footer>
 </body>
 </html>
 

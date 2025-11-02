@@ -28,6 +28,10 @@
             Don't have an account? <a href="register.php">Register here</a>
         </p>
     </div>
+
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
+    </footer>
 </body>
 </html>
 

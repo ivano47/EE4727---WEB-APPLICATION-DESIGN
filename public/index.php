@@ -195,9 +195,8 @@ $is_logged_in = isset($_SESSION['patient_id']);
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer style="background-color: #ffffff; color: #333; text-align: center; padding: 20px 0; margin-top: 0; border-top: 1px solid #e0e0e0;">
-        <p>&copy; 2025 NTU Family & Dental Clinic. All rights reserved.</p>
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
     </footer>
 </body>
 </html>

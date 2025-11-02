@@ -214,6 +214,10 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
             <?php endif; ?>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
+    </footer>
 </body>
 </html>
 <?php

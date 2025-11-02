@@ -34,6 +34,10 @@
             Already have an account? <a href="login.php">Login here</a>
         </p>
     </div>
+
+    <footer>
+        <p>&copy; 2025 NTU Clinic. All rights reserved.</p>
+    </footer>
 </body>
 </html>
 
