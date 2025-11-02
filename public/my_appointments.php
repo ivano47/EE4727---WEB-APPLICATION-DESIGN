@@ -13,7 +13,7 @@ if (!isset($_SESSION['patient_id'])) {
 $patient_id = $_SESSION['patient_id'];
 
 // Get ALL appointments for this patient
-$query = "SELECT a.id, a.appointment_time, a.status, d.name as doctor_name, d.specialty 
+$query = "SELECT a.id, a.appointment_time, a.status, a.doctor_id, d.name as doctor_name, d.specialty 
           FROM appointments a 
           INNER JOIN doctors d ON a.doctor_id = d.id 
           WHERE a.patient_id = ? 
@@ -40,6 +40,12 @@ $result = $stmt->get_result();
     <div class="container">
         <h1>My Upcoming Appointments</h1>
         <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! View and manage your scheduled appointments.</p>
+
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'rescheduled'): ?>
+            <p style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 4px;">
+                ✓ Appointment rescheduled successfully! A confirmation email has been sent.
+            </p>
+        <?php endif; ?>
 
         <?php if (isset($_GET['success']) && $_GET['success'] === 'booked'): ?>
             <p style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 4px;">
@@ -72,6 +78,7 @@ $result = $stmt->get_result();
                         $appointment_time = date('l, F j, Y \a\t g:i A', strtotime($appointment['appointment_time']));
                         $status = htmlspecialchars($appointment['status']);
                         $appointment_id = $appointment['id'];
+                        $doctor_id = $appointment['doctor_id'];
                         
                         echo "<tr>";
                         echo "<td>$doctor_name</td>";
@@ -81,6 +88,10 @@ $result = $stmt->get_result();
                         echo "<td>";
                         
                         if ($status === 'scheduled') {
+                            // Reschedule button
+                            echo "<a href='reschedule.php?appointment_id=$appointment_id&doctor_id=$doctor_id' style='display: inline-block; padding: 8px 16px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px; margin-right: 5px;'>Reschedule</a>";
+                            
+                            // Cancel button
                             echo "<form action='../includes/cancel_appointment.php' method='POST' style='margin: 0; display: inline;' onsubmit='return confirm(\"Are you sure you want to cancel this appointment?\");'>";
                             echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
                             echo "<input type='submit' value='Cancel' style='width: auto; padding: 8px 16px; background-color: #d32f2f;'>";
