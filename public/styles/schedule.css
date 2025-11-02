@@ -105,6 +105,12 @@
     gap: 10px;
 }
 
+/* Override global button width for time slots */
+.timeslot-grid .time-button,
+.timeslot-grid button.time-button {
+    width: auto !important;
+}
+
 .time-button {
     padding: 12px 20px;
     margin: 5px;
@@ -120,9 +126,15 @@
 }
 
 .time-button:hover {
+    background-color: #e3f2fd;
+    border-color: #2196F3;
+}
+
+.time-button.selected {
     background-color: #2196F3;
     color: white;
     border-color: #2196F3;
+    font-weight: bold;
 }
 
 .time-button.booked {
@@ -174,4 +186,7 @@
         margin: 0;
     }
 }
+
+
+
 

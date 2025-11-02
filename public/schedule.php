@@ -78,6 +78,7 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
     <title>Schedule Appointment - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/schedule.css">
+    <script src="scripts/schedule.js"></script>
 </head>
 <body>
     <?php include '../includes/nav.php'; ?>
@@ -190,11 +191,9 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                                         <small>Booked</small>
                                       </div>';
                             } else {
-                                echo '<form action="../includes/book.php" method="POST" class="time-slot-form">
-                                        <input type="hidden" name="doctor_id" value="' . $selected_doctor . '">
-                                        <input type="hidden" name="appointment_time" value="' . $appointment_datetime . '">
-                                        <button type="submit" class="time-button">' . $display_time . '</button>
-                                      </form>';
+                                echo '<button type="button" class="time-button" onclick="selectTimeSlot(this, \'' . $appointment_datetime . '\', ' . $selected_doctor . ', \'' . $display_time . '\')">' 
+                                     . $display_time . 
+                                     '</button>';
                             }
                             
                             $current_time->modify('+1 hour');
