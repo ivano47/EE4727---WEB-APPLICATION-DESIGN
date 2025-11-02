@@ -77,7 +77,7 @@ $booked_stmt->close();
         <h1>Reschedule Appointment</h1>
         <p>Select a new time slot with <?php echo htmlspecialchars($current_appointment['doctor_name']); ?></p>
 
-        <div style="background-color: #e3f2fd; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <div class="alert alert-info">
             <h3>Current Appointment</h3>
             <p><strong>Doctor:</strong> <?php echo htmlspecialchars($current_appointment['doctor_name']); ?> (<?php echo htmlspecialchars($current_appointment['specialty']); ?>)</p>
             <p><strong>Current Time:</strong> <?php echo date('l, F j, Y \a\t g:i A', strtotime($current_appointment['appointment_time'])); ?></p>
@@ -128,10 +128,10 @@ $booked_stmt->close();
                                         echo "<td>$day_of_week</td>";
                                         echo "<td>$display_date at $display_time</td>";
                                         echo "<td>";
-                                        echo "<form action='../includes/process_reschedule.php' method='POST' style='margin: 0;'>";
+                                        echo "<form action='../includes/process_reschedule.php' method='POST' class='form-inline-block'>";
                                         echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
                                         echo "<input type='hidden' name='new_time' value='$appointment_datetime'>";
-                                        echo "<input type='submit' value='Select' style='width: auto; padding: 8px 16px;'>";
+                                        echo "<input type='submit' value='Select' class='btn btn-submit'>";
                                         echo "</form>";
                                         echo "</td>";
                                         echo "</tr>";
@@ -145,10 +145,10 @@ $booked_stmt->close();
                     }
                     
                     if (!$slots_found) {
-                        echo "<tr><td colspan='3' style='text-align: center;'>No available slots found for this doctor.</td></tr>";
+                        echo "<tr><td colspan='3' class='text-center'>No available slots found for this doctor.</td></tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='3' style='text-align: center;'>No schedule available.</td></tr>";
+                    echo "<tr><td colspan='3' class='text-center'>No schedule available.</td></tr>";
                 }
                 
                 $schedule_stmt->close();
@@ -157,9 +157,10 @@ $booked_stmt->close();
             </tbody>
         </table>
 
-        <p style="margin-top: 20px;">
-            <a href="my_appointments.php" style="color: #2196F3;">← Back to My Appointments</a>
+        <p class="mt-20">
+            <a href="my_appointments.php" class="btn-link">← Back to My Appointments</a>
         </p>
     </div>
 </body>
 </html>
+

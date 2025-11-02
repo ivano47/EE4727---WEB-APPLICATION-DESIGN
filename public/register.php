@@ -30,9 +30,10 @@
             <input type="submit" value="Register">
         </form>
 
-        <p style="text-align: center; margin-top: 20px;">
+        <p class="text-center mt-20">
             Already have an account? <a href="login.php">Login here</a>
         </p>
     </div>
 </body>
 </html>
+

@@ -95,13 +95,13 @@ while ($booked = $booked_result->fetch_assoc()) {
                                     
                                     // Check if slot is booked
                                     if (isset($booked_slots[$slot_key])) {
-                                        echo "<span style='color: #999;'>Booked</span>";
+                                        echo "<span class='status-booked'>Booked</span>";
                                     } else {
                                         // Display booking form
-                                        echo "<form action='../includes/book.php' method='POST' style='margin: 0;'>";
+                                        echo "<form action='../includes/book.php' method='POST' class='form-inline-block'>";
                                         echo "<input type='hidden' name='doctor_id' value='$doctor_id'>";
                                         echo "<input type='hidden' name='appointment_time' value='$appointment_datetime'>";
-                                        echo "<input type='submit' value='Book' style='width: auto; padding: 8px 16px;'>";
+                                        echo "<input type='submit' value='Book' class='btn btn-submit'>";
                                         echo "</form>";
                                     }
                                     
@@ -115,7 +115,7 @@ while ($booked = $booked_result->fetch_assoc()) {
                         }
                     }
                 } else {
-                    echo "<tr><td colspan='5' style='text-align: center;'>No available schedules at this time.</td></tr>";
+                    echo "<tr><td colspan='5' class='text-center'>No available schedules at this time.</td></tr>";
                 }
                 
                 $conn->close();
@@ -125,3 +125,4 @@ while ($booked = $booked_result->fetch_assoc()) {
     </div>
 </body>
 </html>
+

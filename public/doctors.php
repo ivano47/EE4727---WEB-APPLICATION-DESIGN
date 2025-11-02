@@ -14,51 +14,52 @@
         <p>Meet our team of experienced healthcare professionals dedicated to providing you with exceptional care.</p>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Johnson" alt="Dr. Sarah Tan" style="width: 200px; height: 200px; border-radius: 50%; float: left; margin-right: 20px;">
+            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Johnson" alt="Dr. Sarah Tan" class="doctor-image">
             <h2>Dr. Sarah Tan</h2>
             <h3>Family Doctor</h3>
             <p>Dr. Sarah Johnson is a board-certified family physician with 15 years of experience in comprehensive primary care. She graduated from NTU and completed her residency at NUH. Dr. Johnson specializes in preventive medicine, women's health, and pediatric care. She believes in building long-term relationships with her patients and providing personalized healthcare solutions.</p>
             <p><strong>Available:</strong> Monday - Friday</p>
-            <div style="clear: both;"></div>
+            <div class="clearfix"></div>
         </div>
 
-        <hr style="margin: 30px 0;">
+        <hr>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Chen" alt="Dr. Michael Chen" style="width: 200px; height: 200px; border-radius: 50%; float: left; margin-right: 20px;">
+            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Chen" alt="Dr. Michael Chen" class="doctor-image">
             <h2>Dr. Michael Chen</h2>
             <h3>Family Doctor</h3>
             <p>Dr. Michael Chen brings over 12 years of experience in family medicine with a special focus on chronic disease management and preventive care for all ages. He earned his medical degree from NUS of Medicine and completed his residency at SGH. Dr. Chen is passionate about helping patients achieve optimal health through lifestyle modifications and evidence-based medical treatments.</p>
             <p><strong>Available:</strong> Monday, Wednesday - Saturday</p>
-            <div style="clear: both;"></div>
+            <div class="clearfix"></div>
         </div>
 
-        <hr style="margin: 30px 0;">
+        <hr>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Williams" alt="Dr. Emily Wong" style="width: 200px; height: 200px; border-radius: 50%; float: left; margin-right: 20px;">
+            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Williams" alt="Dr. Emily Wong" class="doctor-image">
             <h2>Dr. Emily Wong</h2>
             <h3>Dentist</h3>
             <p>Dr. Emily Wong is a general dentist specializing in cosmetic dentistry and preventive oral care. With 10 years of experience, she has helped thousands of patients achieve healthy, beautiful smiles. Dr. Williams graduated from NUS Dentistry. She is known for her gentle approach and commitment to patient comfort.</p>
             <p><strong>Available:</strong> Monday, Tuesday, Thursday - Saturday</p>
-            <div style="clear: both;"></div>
+            <div class="clearfix"></div>
         </div>
 
-        <hr style="margin: 30px 0;">
+        <hr>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Martinez" alt="Dr. Robert Lim" style="width: 200px; height: 200px; border-radius: 50%; float: left; margin-right: 20px;">
+            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Martinez" alt="Dr. Robert Lim" class="doctor-image">
             <h2>Dr. Robert Lim</h2>
             <h3>Dentist</h3>
             <p>Dr. Robert Lim is an experienced dentist with expertise in advanced dental procedures including dental implants and orthodontics. He has been practicing for 18 years and earned his Doctor of Dental Surgery degree from the University of Pennsylvania School of Dental Medicine. Dr. Lim stays current with the latest dental technologies and techniques to provide his patients with the best possible care.</p>
             <p><strong>Available:</strong> Tuesday - Saturday</p>
-            <div style="clear: both;"></div>
+            <div class="clearfix"></div>
         </div>
 
-        <div style="margin-top: 30px; text-align: center;">
+        <div class="mt-30 text-center">
             <p><strong>Ready to book an appointment?</strong></p>
-            <a href="login.php" style="display: inline-block; padding: 12px 30px; background-color: #333; color: white; text-decoration: none; border-radius: 4px; margin-top: 10px;">Login to Schedule</a>
+            <a href="login.php" class="btn btn-dark mt-10">Login to Schedule</a>
         </div>
     </div>
 </body>
 </html>
+

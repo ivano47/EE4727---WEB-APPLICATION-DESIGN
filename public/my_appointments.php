@@ -42,19 +42,19 @@ $result = $stmt->get_result();
         <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! View and manage your scheduled appointments.</p>
 
         <?php if (isset($_GET['success']) && $_GET['success'] === 'rescheduled'): ?>
-            <p style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 4px;">
+            <p class="alert alert-success">
                 ✓ Appointment rescheduled successfully! A confirmation email has been sent.
             </p>
         <?php endif; ?>
 
         <?php if (isset($_GET['success']) && $_GET['success'] === 'booked'): ?>
-            <p style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 4px;">
+            <p class="alert alert-success">
                 ✓ Appointment booked successfully! A confirmation email has been sent.
             </p>
         <?php endif; ?>
 
         <?php if (isset($_GET['success']) && $_GET['success'] === 'cancelled'): ?>
-            <p style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 4px;">
+            <p class="alert alert-success">
                 ✓ Appointment cancelled successfully.
             </p>
         <?php endif; ?>
@@ -89,22 +89,22 @@ $result = $stmt->get_result();
                         
                         if ($status === 'scheduled') {
                             // Reschedule button
-                            echo "<a href='reschedule.php?appointment_id=$appointment_id&doctor_id=$doctor_id' style='display: inline-block; padding: 8px 16px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px; margin-right: 5px;'>Reschedule</a>";
+                            echo "<a href='reschedule.php?appointment_id=$appointment_id&doctor_id=$doctor_id' class='btn btn-primary'>Reschedule</a>";
                             
                             // Cancel button
-                            echo "<form action='../includes/cancel_appointment.php' method='POST' style='margin: 0; display: inline;' onsubmit='return confirm(\"Are you sure you want to cancel this appointment?\");'>";
+                            echo "<form action='../includes/cancel_appointment.php' method='POST' class='form-inline' onsubmit='return confirm(\"Are you sure you want to cancel this appointment?\");'>";
                             echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
-                            echo "<input type='submit' value='Cancel' style='width: auto; padding: 8px 16px; background-color: #d32f2f;'>";
+                            echo "<input type='submit' value='Cancel' class='btn btn-danger btn-submit'>";
                             echo "</form>";
                         } else {
-                            echo "<span style='color: #999;'>-</span>";
+                            echo "<span class='text-muted'>-</span>";
                         }
                         
                         echo "</td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5' style='text-align: center;'>No appointments scheduled yet. <a href='schedule.php'>Book an appointment</a></td></tr>";
+                    echo "<tr><td colspan='5' class='text-center'>No appointments scheduled yet. <a href='schedule.php'>Book an appointment</a></td></tr>";
                 }
                 
                 $stmt->close();
@@ -115,3 +115,4 @@ $result = $stmt->get_result();
     </div>
 </body>
 </html>
+

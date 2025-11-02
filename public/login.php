@@ -24,9 +24,10 @@
             <input type="submit" value="Login">
         </form>
 
-        <p style="text-align: center; margin-top: 20px;">
+        <p class="text-center mt-20">
             Don't have an account? <a href="register.php">Register here</a>
         </p>
     </div>
 </body>
 </html>
+

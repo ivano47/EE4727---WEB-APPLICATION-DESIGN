@@ -14,7 +14,7 @@
         <h1>Welcome to NTU Family & Dental Clinic</h1>
         <p>Your trusted healthcare provider for comprehensive family medicine and dental care. We are committed to providing quality healthcare services with compassion and excellence.</p>
         
-        <img src="https://via.placeholder.com/800x400/4A90E2/ffffff?text=NTU+Clinic" alt="Clinic Welcome Image" style="width: 100%; margin: 20px 0; border-radius: 4px;">
+        <img src="https://via.placeholder.com/800x400/4A90E2/ffffff?text=NTU+Clinic" alt="Clinic Welcome Image" class="hero-image">
         
         <h2>Our Services</h2>
         <p>We offer a wide range of medical and dental services including:</p>
@@ -30,13 +30,13 @@
         <h2>Book Your Appointment Today</h2>
         <p>Schedule an appointment with our experienced doctors online. Browse our team of healthcare professionals and choose a time that works best for you.</p>
         
-        <hr style="margin: 40px 0;">
+        <hr class="large-margin">
         
         <div id="contact">
             <h2>Contact Us</h2>
             <p>Get in touch with NTU Family & Dental Clinic. We're here to help!</p>
 
-            <div style="margin: 30px 0;">
+            <div class="m-30">
                 <h3>Clinic Information</h3>
                 <p><strong>Address:</strong><br>
                 50 Nanyang Avenue<br>
@@ -51,7 +51,7 @@
                 Sunday: Closed</p>
             </div>
 
-            <div style="margin: 30px 0;">
+            <div class="m-30">
                 <h3>Emergency Services</h3>
                 <p>For medical emergencies, please call <strong>995</strong> or visit the nearest hospital emergency department.</p>
             </div>
