@@ -7,7 +7,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NTU Clinic - Home</title>
+    <title>Home - NTU Clinic</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/home.css">
     <script src="scripts/smooth-scroll.js"></script>
@@ -29,12 +29,12 @@ $is_logged_in = isset($_SESSION['patient_id']);
             </div>
         </div>
         <div class="hero-image">
-            <img src="https://via.placeholder.com/600x400/4A90E2/ffffff?text=Modern+Clinic+Interior" alt="NTU Clinic Interior">
+            <img src="assets/dsc_0531_rz_web.jpg" alt="NTU Clinic Interior">
         </div>
     </section>
 
     <div class="container">
-        <section class="info-cards-container">
+        <section class="info-cards-container card">
             <div class="info-card">
                 <div class="info-card-icon">👨‍⚕️</div>
                 <h3>Licensed Doctors</h3>
@@ -60,7 +60,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
             </div>
         </section>
 
-        <section class="services-section">
+        <section class="services-section card">
             <h2>Our Services</h2>
             <div class="services-grid">
                 <div class="service-item">
@@ -95,7 +95,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
             </div>
         </section>
 
-        <section style="text-align: center; padding: 60px 0;">
+        <section class="card" style="text-align: center; padding: 60px 0;">
             <h2 style="font-size: 2.5em; margin-bottom: 20px; color: #333;">Meet Our Doctors</h2>
             <p style="font-size: 1.2em; color: #666; margin-bottom: 30px;">Our team of experienced healthcare professionals is dedicated to providing you with the highest quality care.</p>
             <a href="doctors.php" class="hero-btn-primary">View Our Team</a>
@@ -103,7 +103,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
     </div>
 
     <section id="contact" class="contact-section">
-        <div class="container" style="display: flex; flex-wrap: wrap; gap: 40px; width: 100%;">
+        <div class="container card" style="display: flex; flex-wrap: wrap; gap: 40px; width: 100%;">
             <!-- Contact Information -->
             <div class="contact-info">
                 <h2>Get In Touch</h2>
@@ -162,7 +162,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
     </section>
 
     <!-- Footer -->
-    <footer style="background-color: #333; color: white; text-align: center; padding: 20px 0; margin-top: 0;">
+    <footer style="background-color: #ffffff; color: #333; text-align: center; padding: 20px 0; margin-top: 0; border-top: 1px solid #e0e0e0;">
         <p>&copy; 2025 NTU Family & Dental Clinic. All rights reserved.</p>
     </footer>
 </body>

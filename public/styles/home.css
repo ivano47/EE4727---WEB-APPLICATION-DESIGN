@@ -40,7 +40,7 @@
 
 .hero-image img {
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -89,8 +89,7 @@
     justify-content: space-around;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 60px 0;
-    background-color: #fff;
+    padding: 30px 0;
 }
 
 .info-card {
@@ -133,8 +132,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
-    padding: 60px 0;
-    background-color: #f9f9f9;
+    padding: 0;
 }
 
 .contact-info {
@@ -167,10 +165,7 @@
 .contact-form {
     flex: 1;
     min-width: 300px;
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0;
 }
 
 .contact-form h3 {
@@ -229,8 +224,7 @@
 }
 
 .services-section {
-    padding: 60px 0;
-    background-color: white;
+    padding: 30px 0;
 }
 
 .services-section h2 {
