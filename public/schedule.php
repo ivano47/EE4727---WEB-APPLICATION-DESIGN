@@ -87,10 +87,9 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
         <h1>Schedule an Appointment</h1>
         <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! Select a doctor and date to view available time slots.</p>
 
-        <div class="schedule-container">
-            <!-- Doctor Selection and Calendar -->
+        <div class="schedule-container" id="schedule-section">
+            <!-- Doctor Selection -->
             <form action="schedule.php" method="GET" class="schedule-controls">
-                <!-- Doctor Selection -->
                 <div class="doctor-select-container">
                     <label for="doctor">Select Doctor:</label>
                     <select name="doctor_id" id="doctor" onchange="this.form.submit()" required>
@@ -107,111 +106,116 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
                         ?>
                     </select>
                 </div>
+            </form>
 
                 <?php if ($selected_doctor): ?>
-                    <!-- Calendar Display -->
-                    <div class="calendar-section">
-                        <div class="calendar-header">
-                            <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $prev_month; ?>" class="btn-link">← Previous</a>
-                            <h3><?php echo date('F Y', strtotime($selected_date)); ?></h3>
-                            <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $next_month; ?>" class="btn-link">Next →</a>
+
+                    <div class="schedule-columns">
+                        <div class="schedule-left-column">
+                            <div class="calendar-section">
+                                <div class="calendar-header">
+                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $prev_month; ?>" class="btn-link">← Previous</a>
+                                    <h3><?php echo date('F Y', strtotime($selected_date)); ?></h3>
+                                    <a href="schedule.php?doctor_id=<?php echo $selected_doctor; ?>&date=<?php echo $next_month; ?>" class="btn-link">Next →</a>
+                                </div>
+
+                                <div class="calendar-grid">
+                                    <!-- Day names (no idea how to make this dynamic) -->
+                                    <div class="day-name">Sun</div>
+                                    <div class="day-name">Mon</div>
+                                    <div class="day-name">Tue</div>
+                                    <div class="day-name">Wed</div>
+                                    <div class="day-name">Thu</div>
+                                    <div class="day-name">Fri</div>
+                                    <div class="day-name">Sat</div>
+
+                                    <?php
+                                    // Empty cells before first day
+                                    for ($i = 0; $i < $first_day_weekday; $i++) {
+                                        echo '<div class="day empty"></div>';
+                                    }
+
+                                    // Days of the month
+                                    $today = date('Y-m-d');
+                                    for ($day = 1; $day <= $days_in_month; $day++) {
+                                        $current_date = $current_month . '-' . sprintf('%02d', $day);
+                                        $day_of_week = date('l', strtotime($current_date));
+                                        
+                                        // Check if doctor works on this day and if its not in the past
+                                        $is_available = isset($doctor_schedule[$day_of_week]) && $current_date >= $today;
+                                        $is_selected = ($current_date === $selected_date);
+                                        
+                                        if ($is_available) {
+                                            $selected_class = $is_selected ? 'selected' : '';
+                                            echo '<div class="day">';
+                                            echo '<a href="schedule.php?doctor_id=' . $selected_doctor . '&date=' . $current_date . '" class="day-link ' . $selected_class . '">' . $day . '</a>';
+                                            echo '</div>';
+                                        } else {
+                                            echo '<div class="day disabled">' . $day . '</div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="calendar-grid">
-                            <!-- Day names (no idea how to make this dynamic) -->
-                            <div class="day-name">Sun</div>
-                            <div class="day-name">Mon</div>
-                            <div class="day-name">Tue</div>
-                            <div class="day-name">Wed</div>
-                            <div class="day-name">Thu</div>
-                            <div class="day-name">Fri</div>
-                            <div class="day-name">Sat</div>
-
-                            <?php
-                            // Empty cells before first day
-                            for ($i = 0; $i < $first_day_weekday; $i++) {
-                                echo '<div class="day empty"></div>';
-                            }
-
-                            // Days of the month
-                            $today = date('Y-m-d');
-                            for ($day = 1; $day <= $days_in_month; $day++) {
-                                $current_date = $current_month . '-' . sprintf('%02d', $day);
-                                $day_of_week = date('l', strtotime($current_date));
-                                
-                                // Check if doctor works on this day and if its not in the past
-                                $is_available = isset($doctor_schedule[$day_of_week]) && $current_date >= $today;
-                                $is_selected = ($current_date === $selected_date);
-                                
-                                if ($is_available) {
-                                    $selected_class = $is_selected ? 'selected' : '';
-                                    echo '<div class="day">';
-                                    echo '<a href="schedule.php?doctor_id=' . $selected_doctor . '&date=' . $current_date . '" class="day-link ' . $selected_class . '">' . $day . '</a>';
-                                    echo '</div>';
-                                } else {
-                                    echo '<div class="day disabled">' . $day . '</div>';
-                                }
-                            }
-                            ?>
+                        <div class="schedule-right-column">
+                            <?php if ($selected_date): ?>
+                                <div class="timeslot-container">
+                                    <?php
+                                    $day_of_week = date('l', strtotime($selected_date));
+                                    
+                                    if (isset($doctor_schedule[$day_of_week])) {
+                                        echo "<h3>Available Time Slots for Dr. " . htmlspecialchars($doctor_name) . " on " . date('F j, Y', strtotime($selected_date)) . "</h3>";
+                                        
+                                        $start_time = new DateTime($doctor_schedule[$day_of_week]['start_time']);
+                                        $end_time = new DateTime($doctor_schedule[$day_of_week]['end_time']);
+                                        
+                                        echo '<div class="timeslot-grid">';
+                                        
+                                        $has_slots = false;
+                                        
+                                        // Generate hourly time slots
+                                        $current_time = clone $start_time;
+                                        while ($current_time < $end_time) {
+                                            $has_slots = true;
+                                            $time_str = $current_time->format('H:i:s');
+                                            $appointment_datetime = $selected_date . ' ' . $time_str;
+                                            $display_time = $current_time->format('g:i A');
+                                            
+                                            // Check if this slot is booked
+                                            $is_booked = in_array($appointment_datetime, $booked_slots);
+                                            
+                                            if ($is_booked) {
+                                                echo '<div class="time-button booked">
+                                                        ' . $display_time . '<br>
+                                                        <small>Booked</small>
+                                                      </div>';
+                                            } else {
+                                                echo '<button type="button" class="time-button" onclick="selectTimeSlot(this, \'' . $appointment_datetime . '\', ' . $selected_doctor . ', \'' . $display_time . '\')">' 
+                                                     . $display_time . 
+                                                     '</button>';
+                                            }
+                                            
+                                            $current_time->modify('+1 hour');
+                                        }
+                                        
+                                        echo '</div>';
+                                        
+                                        if (!$has_slots) {
+                                            echo '<div class="no-slots">No time slots available for this date.</div>';
+                                        }
+                                    } else {
+                                        echo '<div class="no-slots">Dr. ' . htmlspecialchars($doctor_name) . ' is not available on ' . date('l, F j, Y', strtotime($selected_date)) . '</div>';
+                                    }
+                                    ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="no-slots">Please select a date from the calendar to view available time slots.</div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
-            </form>
-
-            <!-- Time Slots -->
-            <?php if ($selected_doctor && $selected_date): ?>
-                <div class="timeslot-container">
-                    <?php
-                    $day_of_week = date('l', strtotime($selected_date));
-                    
-                    if (isset($doctor_schedule[$day_of_week])) {
-                        echo "<h3>Available Time Slots for Dr. " . htmlspecialchars($doctor_name) . " on " . date('F j, Y', strtotime($selected_date)) . "</h3>";
-                        
-                        $start_time = new DateTime($doctor_schedule[$day_of_week]['start_time']);
-                        $end_time = new DateTime($doctor_schedule[$day_of_week]['end_time']);
-                        
-                        echo '<div class="timeslot-grid">';
-                        
-                        $has_slots = false;
-                        
-                        // Generate hourly time slots
-                        $current_time = clone $start_time;
-                        while ($current_time < $end_time) {
-                            $has_slots = true;
-                            $time_str = $current_time->format('H:i:s');
-                            $appointment_datetime = $selected_date . ' ' . $time_str;
-                            $display_time = $current_time->format('g:i A');
-                            
-                            // Check if this slot is booked
-                            $is_booked = in_array($appointment_datetime, $booked_slots);
-                            
-                            if ($is_booked) {
-                                echo '<div class="time-button booked">
-                                        ' . $display_time . '<br>
-                                        <small>Booked</small>
-                                      </div>';
-                            } else {
-                                echo '<button type="button" class="time-button" onclick="selectTimeSlot(this, \'' . $appointment_datetime . '\', ' . $selected_doctor . ', \'' . $display_time . '\')">' 
-                                     . $display_time . 
-                                     '</button>';
-                            }
-                            
-                            $current_time->modify('+1 hour');
-                        }
-                        
-                        echo '</div>';
-                        
-                        if (!$has_slots) {
-                            echo '<div class="no-slots">No time slots available for this date.</div>';
-                        }
-                    } else {
-                        echo '<div class="no-slots">Dr. ' . htmlspecialchars($doctor_name) . ' is not available on ' . date('l, F j, Y', strtotime($selected_date)) . '</div>';
-                    }
-                    ?>
-                </div>
-            <?php elseif ($selected_doctor): ?>
-                <div class="no-slots">Please select a date from the calendar above to view available time slots.</div>
-            <?php endif; ?>
         </div>
     </div>
 

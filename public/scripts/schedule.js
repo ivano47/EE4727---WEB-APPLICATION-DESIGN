@@ -4,6 +4,19 @@ let selectedSlot = null;
 let selectedDateTime = null;
 let selectedDoctorId = null;
 
+// Scroll to schedule section if date or doctor was selected (preserves position after page reload)
+window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('date') || (urlParams.has('doctor_id') && urlParams.get('doctor_id') !== '')) {
+        const scheduleSection = document.getElementById('schedule-section');
+        if (scheduleSection) {
+            setTimeout(() => {
+                scheduleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    }
+});
+
 function selectTimeSlot(button, datetime, doctorId, displayTime) {
     // reset form
     const allButtons = document.querySelectorAll('.time-button:not(.booked)');
