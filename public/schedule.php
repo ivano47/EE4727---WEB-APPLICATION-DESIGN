@@ -7,7 +7,7 @@ require_once '../includes/db_connect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
