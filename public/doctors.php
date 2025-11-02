@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <?php include '../includes/nav.php'; ?>
+    <?php 
+    session_start();
+    include '../includes/nav.php'; 
+    ?>
 
     <div class="container">
         <h1>Our Doctors</h1>
@@ -57,7 +60,11 @@
 
         <div class="mt-30 text-center">
             <p><strong>Ready to book an appointment?</strong></p>
-            <a href="login.php" class="btn btn-dark mt-10">Login to Schedule</a>
+            <?php if (isset($_SESSION['patient_id'])): ?>
+                <a href="schedule.php" class="btn btn-dark mt-10">Book Appointment</a>
+            <?php else: ?>
+                <a href="login.php" class="btn btn-dark mt-10">Login to Schedule</a>
+            <?php endif; ?>
         </div>
     </div>
 </body>
