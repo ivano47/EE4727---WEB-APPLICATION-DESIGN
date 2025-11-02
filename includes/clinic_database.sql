@@ -56,7 +56,7 @@ INSERT INTO doctors (name, specialty, bio) VALUES
 ('Dr. Sarah Tan', 'Family Doctor', 'Board-certified family physician with 15 years of experience in comprehensive primary care.'),
 ('Dr. Michael Chen', 'Family Doctor', 'Specializes in preventive medicine and chronic disease management for all ages.'),
 ('Dr. Emily Wong', 'Dentist', 'General dentist specializing in cosmetic dentistry and preventive oral care.'),
-('Dr. Robert Martinez', 'Dentist', 'Experienced in advanced dental procedures including implants and orthodontics.');
+('Dr. Robert Lim', 'Dentist', 'Experienced in advanced dental procedures including implants and orthodontics.');
 
 -- Insert sample doctor schedules
 -- Dr. Sarah Tan (ID: 1) - Family Doctor
@@ -83,7 +83,7 @@ INSERT INTO doctor_schedules (doctor_id, day_of_week, start_time, end_time) VALU
 (3, 'Friday', '08:00:00', '16:00:00'),
 (3, 'Saturday', '09:00:00', '12:00:00');
 
--- Dr. Robert Martinez (ID: 4) - Dentist
+-- Dr. Robert Lim (ID: 4) - Dentist
 INSERT INTO doctor_schedules (doctor_id, day_of_week, start_time, end_time) VALUES
 (4, 'Tuesday', '09:00:00', '17:00:00'),
 (4, 'Wednesday', '09:00:00', '17:00:00'),
