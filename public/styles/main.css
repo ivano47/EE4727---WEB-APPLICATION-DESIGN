@@ -350,27 +350,28 @@ button.btn-cancel:hover {
 }
 
 .alert {
-    padding: 15px;
-    border-radius: 4px;
+    padding: 10px 15px;
+    border-radius: 5px;
     margin-bottom: 20px;
+    border: 1px solid;
 }
 
 .alert-success {
-    color: #2e7d32;
-    background-color: #e8f5e9;
-    border-left: 4px solid #78B461;
+    background-color: #D4EDDA;
+    border-color: #28A745;
+    color: #155724;
 }
 
 .alert-error {
-    color: #c62828;
-    background-color: #ffebee;
-    border-left: 4px solid #f44336;
+    background-color: #FADBD8;
+    border-color: #E74C3C;
+    color: #C0392B;
 }
 
 .alert-info {
-    color: #0277bd;
     background-color: #e3f2fd;
-    border-left: 4px solid #2A3A6A;
+    border-color: #2A3A6A;
+    color: #0277bd;
 }
 
 

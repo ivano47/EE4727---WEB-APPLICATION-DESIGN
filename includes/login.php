@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify password using password_verify() since its hashed
         if (password_verify($password, $user['password'])) {
             // Login successful sostore user data in session
+            $_SESSION['role'] = 'patient';
+            $_SESSION['user_id'] = $user['id'];
             $_SESSION['patient_id'] = $user['id'];
             $_SESSION['full_name'] = $user['full_name'];
             
