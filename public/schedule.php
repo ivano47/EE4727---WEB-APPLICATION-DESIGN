@@ -4,8 +4,8 @@ session_start();
 
 require_once '../includes/db_connect.php';
 
-// USER SHOULD BE LOGGED IN ALREADY
-if (!isset($_SESSION['patient_id'])) {
+// USER SHOULD BE LOGGED IN ALREADY (patient or doctor)
+if (!isset($_SESSION['user_id']) || empty($_SESSION['role'])) {
     header("Location: login.php");
     exit();
 }
@@ -16,9 +16,11 @@ $doctor_id_to_select = null;
 
 if ($reschedule_id) {
     // Query for doctor_id for the appointment to be rescheduled
-    $reschedule_query = "SELECT doctor_id FROM appointments WHERE id = ? AND patient_id = ?";
+    // Use appropriate ID based on role
+    $user_id_field = ($_SESSION['role'] === 'doctor') ? 'doctor_id' : 'patient_id';
+    $reschedule_query = "SELECT doctor_id FROM appointments WHERE id = ? AND $user_id_field = ?";
     $reschedule_stmt = $conn->prepare($reschedule_query);
-    $reschedule_stmt->bind_param("ii", $reschedule_id, $_SESSION['patient_id']);
+    $reschedule_stmt->bind_param("ii", $reschedule_id, $_SESSION['user_id']);
     $reschedule_stmt->execute();
     $reschedule_result = $reschedule_stmt->get_result();
     
@@ -107,7 +109,14 @@ $next_month = date('Y-m-d', strtotime($first_day_of_month . ' +1 month'));
         <?php if ($reschedule_id): ?>
             <p>You are rescheduling your appointment. Please select a new date and time.</p>
         <?php else: ?>
-            <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>! Select a doctor and date to view available time slots.</p>
+            <p>Welcome, <?php 
+                // display either doctor or patient name
+                if ($_SESSION['role'] === 'doctor') {
+                    echo htmlspecialchars($_SESSION['doctor_name']);
+                } else {
+                    echo htmlspecialchars($_SESSION['full_name']);
+                }
+            ?>! Select a doctor and date to view available time slots.</p>
         <?php endif; ?>
 
         <div class="schedule-container" id="schedule-section">

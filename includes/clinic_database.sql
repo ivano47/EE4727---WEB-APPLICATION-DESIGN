@@ -19,6 +19,8 @@ CREATE TABLE doctors (
     name VARCHAR(100) NOT NULL,
     specialty VARCHAR(50) NOT NULL,
     bio TEXT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -51,14 +53,13 @@ CREATE TABLE appointments (
     INDEX idx_appointment_time (appointment_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Insert sample doctors
-INSERT INTO doctors (name, specialty, bio) VALUES
-('Dr. Sarah Tan', 'Family Doctor', 'Board-certified family physician with 15 years of experience in comprehensive primary care.'),
-('Dr. Michael Chen', 'Family Doctor', 'Specializes in preventive medicine and chronic disease management for all ages.'),
-('Dr. Emily Wong', 'Dentist', 'General dentist specializing in cosmetic dentistry and preventive oral care.'),
-('Dr. Robert Lim', 'Dentist', 'Experienced in advanced dental procedures including implants and orthodontics.');
+INSERT INTO doctors (name, specialty, bio, email, password) VALUES
+('Dr. Sarah Tan', 'Family Doctor', 'Board-certified family physician with 15 years of experience in comprehensive primary care.', 's.tan@ntu.clinic', 'PLACEHOLDER'),
+('Dr. Michael Chen', 'Family Doctor', 'Specializes in preventive medicine and chronic disease management for all ages.', 'm.chen@ntu.clinic', 'PLACEHOLDER'),
+('Dr. Emily Wong', 'Dentist', 'General dentist specializing in cosmetic dentistry and preventive oral care.', 'e.wong@ntu.clinic', 'PLACEHOLDER'),
+('Dr. Robert Lim', 'Dentist', 'Experienced in advanced dental procedures including implants and orthodontics.', 'r.lim@ntu.clinic', 'PLACEHOLDER');
 
--- Insert sample doctor schedules
+-- doctor schedules
 -- Dr. Sarah Tan (ID: 1) - Family Doctor
 INSERT INTO doctor_schedules (doctor_id, day_of_week, start_time, end_time) VALUES
 (1, 'Monday', '09:00:00', '17:00:00'),

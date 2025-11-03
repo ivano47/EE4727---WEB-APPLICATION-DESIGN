@@ -6,15 +6,17 @@ session_start();
 require_once 'db_connect.php';
 require_once 'email_config.php';
 
-// Check if user is logged in, if not redirect to login page, SESSION VARIABLE!
-if (!isset($_SESSION['patient_id'])) {
+// Check if user is logged in, if not redirect to login page
+if (!isset($_SESSION['user_id']) || empty($_SESSION['role'])) {
     header("Location: ../public/login.php");
     exit();
 }
 
 // Check if request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $patient_id = $_SESSION['patient_id'];
+    // Get user ID based on role
+    $user_id = $_SESSION['user_id'];
+    $patient_id = ($_SESSION['role'] === 'patient') ? $_SESSION['patient_id'] : null;
     $doctor_id = intval($_POST['doctor_id'] ?? 0);
     $appointment_time = $_POST['appointment_time'] ?? '';
     
@@ -42,8 +44,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($reschedule_id > 0) {
         // This is a reschedule - UPDATE existing appointment NOT INSERT!!
-        $stmt = $conn->prepare("UPDATE appointments SET doctor_id = ?, appointment_time = ? WHERE id = ? AND patient_id = ?");
-        $stmt->bind_param("isii", $doctor_id, $appointment_time, $reschedule_id, $patient_id);
+        // Handle differently based on user role
+        if ($_SESSION['role'] === 'patient') {
+            // Patient rescheduling their own appointment
+            $stmt = $conn->prepare("UPDATE appointments SET doctor_id = ?, appointment_time = ? WHERE id = ? AND patient_id = ?");
+            $stmt->bind_param("isii", $doctor_id, $appointment_time, $reschedule_id, $patient_id);
+        } elseif ($_SESSION['role'] === 'doctor') {
+            // Doctor rescheduling an appointment they own
+            // First, get the patient_id for this appointment
+            $get_patient_stmt = $conn->prepare("SELECT patient_id FROM appointments WHERE id = ? AND doctor_id = ?");
+            $get_patient_stmt->bind_param("ii", $reschedule_id, $user_id);
+            $get_patient_stmt->execute();
+            $get_patient_result = $get_patient_stmt->get_result();
+            
+            if ($get_patient_result->num_rows === 1) {
+                $apt_data = $get_patient_result->fetch_assoc();
+                $patient_id = $apt_data['patient_id'];
+            }
+            $get_patient_stmt->close();
+            
+            // Now update the appointment
+            $stmt = $conn->prepare("UPDATE appointments SET doctor_id = ?, appointment_time = ? WHERE id = ? AND doctor_id = ?");
+            $stmt->bind_param("isii", $doctor_id, $appointment_time, $reschedule_id, $user_id);
+        } else {
+            // Invalid role
+            $conn->close();
+            header("Location: ../public/schedule.php?error=invalid_role");
+            exit();
+        }
         
         // run it
         if ($stmt->execute()) {
@@ -87,8 +115,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email_query->close();
             $conn->close();
             
-            // Redirect to my_appointments.php with rescheduled success message
-            header("Location: ../public/my_appointments.php?success=rescheduled");
+            // Redirect based on user role
+            if ($_SESSION['role'] === 'doctor') {
+                header("Location: ../public/doctor_dashboard.php?success=rescheduled");
+            } else {
+                header("Location: ../public/my_appointments.php?success=rescheduled");
+            }
             exit();
         } else {
             $stmt->close();
