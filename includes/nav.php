@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$is_logged_in = isset($_SESSION['patient_id']);
+// Determine user role
+$user_role = $_SESSION['role'] ?? null;
 ?>
 <nav>
     <a href="index.php" class="nav-logo">
@@ -19,9 +20,12 @@ $is_logged_in = isset($_SESSION['patient_id']);
     </ul>
     
     <div class="nav-buttons">
-        <?php if ($is_logged_in): ?>
+        <?php if ($user_role === 'doctor'): ?>
+            <a href="doctor_dashboard.php" class="btn-primary">Dashboard</a>
+            <a href="../includes/logout.php" class="btn-secondary">Logout</a>
+        <?php elseif ($user_role === 'patient'): ?>
             <a href="my_appointments.php" class="btn-primary">My Appointments</a>
-            <a href="../includes/logout.php" class="btn-primary">Logout</a>
+            <a href="../includes/logout.php" class="btn-secondary">Logout</a>
         <?php else: ?>
             <a href="schedule.php" class="btn-primary">Book Appointment</a>
             <a href="login.php" class="btn-secondary">Login</a>
