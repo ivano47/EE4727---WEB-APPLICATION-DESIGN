@@ -1,0 +1,22 @@
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+
+export default function ProtectedRoute({ children, allowedRoles = [] }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="spinner border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
+
+
+
+  return children
+}
