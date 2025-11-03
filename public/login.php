@@ -19,6 +19,23 @@
             <h1>Patient Login</h1>
             <p>Login to your account to manage appointments.</p>
 
+            <?php
+            // display success message  registering
+            if (isset($_GET['success']) && $_GET['success'] === 'registered') {
+                echo '<div class="alert alert-success">Registration successful! Please login with your credentials.</div>';
+            }
+            
+            // error messages
+            if (isset($_GET['error'])) {
+                $error = $_GET['error'];
+                if ($error === 'empty_fields') {
+                    echo '<div class="alert alert-error">Please fill in all fields.</div>';
+                } elseif ($error === 'invalid_credentials') {
+                    echo '<div class="alert alert-error">Invalid email or password. Please try again.</div>';
+                }
+            }
+            ?>
+
             <form action="../includes/login.php" method="POST" onsubmit="return validateLoginForm()">
                 <label for="email">Email Address:</label>
                 <input type="email" id="email" name="email" required>

@@ -19,6 +19,24 @@
             <h1>Patient Registration</h1>
             <p>Create an account to book appointments with our doctors.</p>
 
+            <?php
+            // error messages
+            if (isset($_GET['error'])) {
+                $error = $_GET['error'];
+                if ($error === 'empty_fields') {
+                    echo '<div class="alert alert-error">Please fill in all fields.</div>';
+                } elseif ($error === 'password_mismatch') {
+                    echo '<div class="alert alert-error">Passwords do not match. Please try again.</div>';
+                } elseif ($error === 'invalid_email') {
+                    echo '<div class="alert alert-error">Invalid email format. Please enter a valid email.</div>';
+                } elseif ($error === 'email_exists') {
+                    echo '<div class="alert alert-error">This email is already registered. Please login or use a different email.</div>';
+                } elseif ($error === 'registration_failed') {
+                    echo '<div class="alert alert-error">Registration failed. Please try again later.</div>';
+                }
+            }
+            ?>
+
             <form action="../includes/register.php" method="POST" onsubmit="return validateRegistrationForm()">
                 <label for="full_name">Full Name:</label>
                 <input type="text" id="full_name" name="full_name" required>
