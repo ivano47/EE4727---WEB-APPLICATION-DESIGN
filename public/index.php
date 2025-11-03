@@ -140,7 +140,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
                         <img src="assets/afdpmuws.jpg" alt="Dr. Sarah Tan">
                     </div>
                     <h3>Dr. Sarah Tan</h3>
-                    <p class="doctor-specialty">Pediatric Dentist</p>
+                    <p class="doctor-specialty">Family Medicine</p>
                 </div>
             </div>
             
