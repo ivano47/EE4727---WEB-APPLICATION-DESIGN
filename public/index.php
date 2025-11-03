@@ -121,7 +121,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
             <div class="doctors-grid">
                 <div class="doctor-profile-card">
                     <div class="doctor-headshot">
-                        <img src="assets/doctor-placeholder.jpg" alt="Dr. Emily Wong">
+                        <img src="assets/cyafdwmuws.jpg" alt="Dr. Emily Wong">
                     </div>
                     <h3>Dr. Emily Wong</h3>
                     <p class="doctor-specialty">General Dentist</p>
@@ -129,7 +129,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
                 
                 <div class="doctor-profile-card">
                     <div class="doctor-headshot">
-                        <img src="assets/doctor-placeholder.jpg" alt="Dr. Michael Chen">
+                        <img src="assets/dh.jpg" alt="Dr. Michael Chen">
                     </div>
                     <h3>Dr. Michael Chen</h3>
                     <p class="doctor-specialty">Family Medicine</p>
@@ -137,9 +137,9 @@ $is_logged_in = isset($_SESSION['patient_id']);
                 
                 <div class="doctor-profile-card">
                     <div class="doctor-headshot">
-                        <img src="assets/doctor-placeholder.jpg" alt="Dr. Sarah Lim">
+                        <img src="assets/afdpmuws.jpg" alt="Dr. Sarah Tan">
                     </div>
-                    <h3>Dr. Sarah Lim</h3>
+                    <h3>Dr. Sarah Tan</h3>
                     <p class="doctor-specialty">Pediatric Dentist</p>
                 </div>
             </div>

@@ -17,7 +17,7 @@
         <p>Meet our team of experienced healthcare professionals dedicated to providing you with exceptional care.</p>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Johnson" alt="Dr. Sarah Tan" class="doctor-image">
+            <img src="assets/afdpmuws.jpg" alt="Dr. Sarah Tan" class="doctor-image">
             <div class="doctor-info">
                 <h2>Dr. Sarah Tan</h2>
                 <h3>Family Doctor</h3>
@@ -32,7 +32,7 @@
         </div>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Chen" alt="Dr. Michael Chen" class="doctor-image">
+            <img src="assets/dh.jpg" alt="Dr. Michael Chen" class="doctor-image">
             <div class="doctor-info">
                 <h2>Dr. Michael Chen</h2>
                 <h3>Family Doctor</h3>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Williams" alt="Dr. Emily Wong" class="doctor-image">
+            <img src="assets/cyafdwmuws.jpg" alt="Dr. Emily Wong" class="doctor-image">
             <div class="doctor-info">
                 <h2>Dr. Emily Wong</h2>
                 <h3>Dentist</h3>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="doctor-card">
-            <img src="https://via.placeholder.com/200x200/4A90E2/ffffff?text=Dr.+Martinez" alt="Dr. Robert Lim" class="doctor-image">
+            <img src="assets/yamdwmuwsl.jpg" alt="Dr. Robert Lim" class="doctor-image">
             <div class="doctor-info">
                 <h2>Dr. Robert Lim</h2>
                 <h3>Dentist</h3>
