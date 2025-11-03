@@ -51,7 +51,7 @@
             <div class="doctor-info">
                 <h2>Dr. Emily Wong</h2>
                 <h3>Dentist</h3>
-                <p>Dr. Emily Wong is a general dentist specializing in cosmetic dentistry and preventive oral care. With 10 years of experience, she has helped thousands of patients achieve healthy, beautiful smiles. Dr. Williams graduated from NUS Dentistry. She is known for her gentle approach and commitment to patient comfort.</p>
+                <p>Dr. Emily Wong is a general dentist specializing in cosmetic dentistry and preventive oral care. With 10 years of experience, she has helped thousands of patients achieve healthy, beautiful smiles. Dr. Wong graduated from NUS Dentistry. She is known for her gentle approach and commitment to patient comfort.</p>
                 <p><strong>Available:</strong> Monday, Tuesday, Thursday - Saturday</p>
                 <?php if (isset($_SESSION['patient_id'])): ?>
                     <a href="schedule.php?doctor_id=3" class="btn btn-primary mt-10">Book with Dr. Wong</a>
