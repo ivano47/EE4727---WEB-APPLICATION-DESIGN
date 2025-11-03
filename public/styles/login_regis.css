@@ -1,3 +1,5 @@
+/* login and regis */
+
 body {
     background-color: #ffffff !important;
 }
@@ -51,22 +53,4 @@ body {
 
 .auth-card a:hover {
     color: #1F2A4D;
-}
-
-.auth-card .alert-error {
-    background-color: #FFE6E6;
-    border: 1px solid #C41E3A;
-    color: #C41E3A;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.auth-card .alert-success {
-    background-color: #E6FFE6;
-    border: 1px solid #28A745;
-    color: #155724;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
 }

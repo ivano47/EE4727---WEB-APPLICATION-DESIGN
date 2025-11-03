@@ -21,14 +21,14 @@ $user_role = $_SESSION['role'] ?? null;
     
     <div class="nav-buttons">
         <?php if ($user_role === 'doctor'): ?>
-            <a href="doctor_dashboard.php" class="btn-primary">Dashboard</a>
-            <a href="../includes/logout.php" class="btn-secondary">Logout</a>
+            <a href="doctor_dashboard.php" class="btn btn-primary">Dashboard</a>
+            <a href="../includes/logout.php" class="btn btn-secondary">Logout</a>
         <?php elseif ($user_role === 'patient'): ?>
-            <a href="my_appointments.php" class="btn-primary">My Appointments</a>
-            <a href="../includes/logout.php" class="btn-secondary">Logout</a>
+            <a href="my_appointments.php" class="btn btn-primary">My Appointments</a>
+            <a href="../includes/logout.php" class="btn btn-secondary">Logout</a>
         <?php else: ?>
-            <a href="schedule.php" class="btn-primary">Book Appointment</a>
-            <a href="login.php" class="btn-secondary">Login</a>
+            <a href="schedule.php" class="btn btn-primary">Book Appointment</a>
+            <a href="login.php" class="btn btn-secondary">Login</a>
         <?php endif; ?>
     </div>
 </nav>

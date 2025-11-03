@@ -144,7 +144,7 @@ $is_logged_in = isset($_SESSION['patient_id']);
                 </div>
             </div>
             
-            <a href="doctors.php" class="btn-secondary" style="margin-top: 30px;">View Our Team</a>
+            <a href="doctors.php" class="btn btn-secondary" style="margin-top: 30px;">View Our Team</a>
         </section>
     </div>
 

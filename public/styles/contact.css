@@ -122,6 +122,7 @@
 .contact-form-column button[type="submit"] {
     background: #C41E3A;
     font-weight: 600;
+    color: #fff;
 }
 
 .contact-form-column button[type="submit"]:hover {

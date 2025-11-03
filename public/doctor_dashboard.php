@@ -52,6 +52,12 @@ $result = $stmt->get_result();
             </p>
         <?php endif; ?>
 
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'completed'): ?>
+            <p class="alert alert-success">
+                ✓ Appointment marked as completed successfully.
+            </p>
+        <?php endif; ?>
+
         <table>
             <thead>
                 <tr>
@@ -83,6 +89,13 @@ $result = $stmt->get_result();
                         echo "<td>";
                         
                         if ($status === 'scheduled') {
+                            
+                            // Complete button
+                            echo "<form action='../includes/complete_appointment.php' method='POST' class='form-inline' onsubmit='return confirm(\"Mark this appointment as completed?\");'>";
+                            echo "<input type='hidden' name='appointment_id' value='$appointment_id'>";
+                            echo "<input type='submit' value='Complete' class='btn btn-success btn-submit'>";
+                            echo "</form>";
+                            
                             // Reschedule button
                             echo "<a href='schedule.php?reschedule_id=$appointment_id' class='btn btn-primary'>Reschedule</a>";
                             
