@@ -12,6 +12,13 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['role'])) {
 
 // Check if this is a reschedule request
 $reschedule_id = $_GET['reschedule_id'] ?? null;
+
+// Doctors can only reschedule, cannot book new appointments
+if ($_SESSION['role'] === 'doctor' && !$reschedule_id) {
+    header("Location: doctor_dashboard.php?error=doctors_cannot_book");
+    exit();
+}
+
 $doctor_id_to_select = null;
 
 if ($reschedule_id) {

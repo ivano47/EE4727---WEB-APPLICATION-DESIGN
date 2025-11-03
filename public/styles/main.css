@@ -65,6 +65,51 @@ nav {
     width: auto;
 }
 
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #2A3A6A;
+    padding: 5px 10px;
+}
+
+.nav-hidden {
+    display: none;
+}
+
+.nav-visible {
+    display: block;
+}
+
+@media (min-width: 769px) {
+    .mobile-menu-toggle {
+        display: none;
+    }
+    
+    #mobile-menu-links {
+        display: flex !important;
+        align-items: center;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    nav {
+        flex-wrap: wrap;
+    }
+    
+    #mobile-menu-links {
+        width: 100%;
+        order: 3;
+    }
+}
+
 .nav-links {
     display: flex;
     gap: 20px;

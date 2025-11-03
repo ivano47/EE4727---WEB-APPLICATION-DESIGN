@@ -19,6 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patient_id = ($_SESSION['role'] === 'patient') ? $_SESSION['patient_id'] : null;
     $doctor_id = intval($_POST['doctor_id'] ?? 0);
     $appointment_time = $_POST['appointment_time'] ?? '';
+    $reschedule_id = intval($_POST['reschedule_id'] ?? 0);
+    
+    // Doctors can only reschedule, not book new appointments
+    if ($_SESSION['role'] === 'doctor' && $reschedule_id === 0) {
+        header("Location: ../public/doctor_dashboard.php?error=doctors_cannot_book");
+        exit();
+    }
     
     if ($doctor_id <= 0 || empty($appointment_time)) {
         header("Location: ../public/schedule.php?error=invalid_data");
@@ -38,9 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     $check_stmt->close();
-    
-    // Check if this is a reschedule or new appointment
-    $reschedule_id = intval($_POST['reschedule_id'] ?? 0);
     
     if ($reschedule_id > 0) {
         // This is a reschedule - UPDATE existing appointment NOT INSERT!!
