@@ -14,7 +14,7 @@ export default {
         highlight: '#78B461', // Our Green
       },
       fontFamily: {
-        sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
+        sans: ['Open Sans', 'sans-serif'],
         heading: ['Poppins', 'sans-serif'],
       },
     },
