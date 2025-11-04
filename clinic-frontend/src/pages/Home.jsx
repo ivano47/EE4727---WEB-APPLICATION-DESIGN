@@ -6,8 +6,7 @@ import DoctorCard from '../components/DoctorCard'
 
 export default function Home() {
   const { user, profile } = useAuth()
-  const [doctors, setDoctors] = useState([])
-
+  const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -40,13 +39,14 @@ export default function Home() {
         if (!response.ok) throw new Error('Failed to fetch');
         
         const data = await response.json();
+        console.log('Home page doctors data:', data);
         setDoctors(data || []);
       } catch (error) {
         console.error('Error fetching doctors:', error);
       }
-    }
+    };
 
-    fetchDoctors()
+    fetchDoctors();
   }, [])
 
   return (
@@ -119,10 +119,15 @@ export default function Home() {
         <p className="font-sans text-lg text-gray-600 text-center mt-4 max-w-2xl mx-auto">
           Our team of experienced professionals
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10 max-w-5xl mx-auto">
           {doctors.map(doctor => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
+        </div>
+        <div className="flex justify-center mt-10">
+          <Link to="/doctors" className="bg-transparent border border-primary text-primary rounded-lg px-6 py-3 font-bold hover:bg-primary hover:text-white transition-all">
+            View All Doctors
+          </Link>
         </div>
       </div>
 

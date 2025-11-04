@@ -1,6 +1,7 @@
 import { supabase } from '../supabaseClient';
 
 function DoctorCard({ doctor }) {
+  console.log('DoctorCard received doctor:', doctor);
   let publicURL = { publicUrl: '/images/default-doctor.jpg' };
   if (doctor.avatar_url) {
     const { data } = supabase
