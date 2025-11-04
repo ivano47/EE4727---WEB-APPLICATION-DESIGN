@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
@@ -12,10 +12,11 @@ function Login() {
   const { user } = useAuth();
 
   // Redirect if already logged in
-  if (user) {
-    navigate('/my-dashboard');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/my-dashboard');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

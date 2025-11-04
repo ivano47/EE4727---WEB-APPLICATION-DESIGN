@@ -4,6 +4,7 @@
 -- First, modify the RLS policy to allow the trigger to insert
 -- Drop existing insert policy
 DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
+DROP POLICY IF EXISTS "Enable insert for authenticated users and service role" ON profiles;
 
 -- Create new policy that allows service role to insert (for triggers)
 CREATE POLICY "Enable insert for authenticated users and service role"
@@ -14,15 +15,18 @@ WITH CHECK (
 );
 
 -- Create a function that will create a profile for new users
+DROP FUNCTION IF EXISTS public.handle_new_user() CASCADE;
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (user_id, full_name, email, role)
+  INSERT INTO public.profiles (user_id, full_name, email, role, phone_number, date_of_birth)
   VALUES (
     NEW.id,
-    COALESCE(NEW.raw_user_meta_data->>'first_name' || ' ' || NEW.raw_user_meta_data->>'last_name', NEW.email),
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'first_name' || ' ' || NEW.raw_user_meta_data->>'last_name', NEW.email),
     NEW.email,
-    'patient'
+    COALESCE(NEW.raw_user_meta_data->>'role', 'patient'),
+    NEW.raw_user_meta_data->>'phone_number',
+    (NEW.raw_user_meta_data->>'date_of_birth')::date
   );
   RETURN NEW;
 EXCEPTION WHEN OTHERS THEN

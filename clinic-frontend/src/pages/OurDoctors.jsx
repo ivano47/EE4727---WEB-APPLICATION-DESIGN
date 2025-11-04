@@ -6,10 +6,7 @@ function OurDoctors() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
+  const [filter, setFilter] = useState('all');
 
   const fetchDoctors = async () => {
     try {
@@ -59,14 +56,37 @@ function OurDoctors() {
     }
   };
 
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
   return (
-    <div className="container-custom py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Doctors</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <h1 className="font-heading text-4xl font-bold text-primary text-center">Our Doctors</h1>
+        <p className="font-sans text-lg text-gray-600 text-center mt-4 max-w-2xl mx-auto">
           Meet our team of experienced and dedicated healthcare professionals
           committed to providing you with the best medical care.
         </p>
+        <div className="flex justify-center space-x-2 my-8">
+          <button
+            onClick={() => setFilter('all')}
+            className={filter === 'all' ? 'bg-primary text-white rounded-lg px-4 py-2 font-bold' : 'bg-transparent border border-gray-300 text-gray-600 rounded-lg px-4 py-2 font-bold hover:bg-gray-100'}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFilter('Family Doctor')}
+            className={filter === 'Family Doctor' ? 'bg-primary text-white rounded-lg px-4 py-2 font-bold' : 'bg-transparent border border-gray-300 text-gray-600 rounded-lg px-4 py-2 font-bold hover:bg-gray-100'}
+          >
+            Family Doctor
+          </button>
+          <button
+            onClick={() => setFilter('Dentist')}
+            className={filter === 'Dentist' ? 'bg-primary text-white rounded-lg px-4 py-2 font-bold' : 'bg-transparent border border-gray-300 text-gray-600 rounded-lg px-4 py-2 font-bold hover:bg-gray-100'}
+          >
+            Dentist
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -85,9 +105,14 @@ function OurDoctors() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
-          ))}
+          {doctors
+            .filter(doctor => {
+              if (filter === 'all') return true;
+              return doctor.specialty === filter;
+            })
+            .map(doctor => (
+              <DoctorCard key={doctor.id} doctor={doctor} />
+            ))}
         </div>
       )}
     </div>

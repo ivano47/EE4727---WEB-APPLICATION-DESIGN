@@ -21,6 +21,7 @@ ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
 -- Maps to: doctors.php (lines 10-93) - "Everyone can see the list of doctors"
 -- Old PHP: No authentication check - public page
 -- New RLS: USING (true) means anyone can SELECT
+DROP POLICY IF EXISTS "profiles_select_public" ON profiles;
 CREATE POLICY "profiles_select_public"
     ON profiles
     FOR SELECT
@@ -29,14 +30,15 @@ CREATE POLICY "profiles_select_public"
 COMMENT ON POLICY "profiles_select_public" ON profiles IS 
 'Replaces doctors.php logic - allows public to view all doctor profiles';
 
--- Policy 2: Users can only insert their own profile
+-- Policy 2: Users can only insert their own profile, or service role for triggers
 -- Maps to: register.php (lines 47-48) - INSERT INTO patients
 -- Old PHP: INSERT INTO patients (full_name, email, password) VALUES (?, ?, ?)
--- New RLS: auth.uid() = user_id ensures user only creates their own profile
+-- New RLS: auth.uid() = user_id ensures user only creates their own profile, service_role for triggers
+DROP POLICY IF EXISTS "profiles_insert_own" ON profiles;
 CREATE POLICY "profiles_insert_own"
     ON profiles
     FOR INSERT
-    WITH CHECK (auth.uid() = user_id);
+    WITH CHECK (auth.uid() = user_id OR auth.role() = 'service_role');
 
 COMMENT ON POLICY "profiles_insert_own" ON profiles IS 
 'Replaces register.php logic - users can only create their own profile during signup';
@@ -45,6 +47,7 @@ COMMENT ON POLICY "profiles_insert_own" ON profiles IS
 -- Maps to: Any future profile update functionality
 -- Old PHP: UPDATE patients ... WHERE id = $_SESSION['user_id']
 -- New RLS: auth.uid() = user_id ensures users only update their own data
+DROP POLICY IF EXISTS "profiles_update_own" ON profiles;
 CREATE POLICY "profiles_update_own"
     ON profiles
     FOR UPDATE
@@ -64,6 +67,7 @@ COMMENT ON POLICY "profiles_update_own" ON profiles IS
 -- Maps to: schedule.php - "Everyone needs to see available appointment slots"
 -- Old PHP: No authentication check for viewing schedules
 -- New RLS: USING (true) means anyone can SELECT
+DROP POLICY IF EXISTS "doctor_schedules_select_public" ON doctor_schedules;
 CREATE POLICY "doctor_schedules_select_public"
     ON doctor_schedules
     FOR SELECT
@@ -76,6 +80,7 @@ COMMENT ON POLICY "doctor_schedules_select_public" ON doctor_schedules IS
 -- Maps to: Future doctor schedule management functionality
 -- Old PHP: UPDATE doctor_schedules ... WHERE doctor_id = $_SESSION['doctor_id']
 -- New RLS: auth.uid() = doctor_user_id ensures doctors only manage their own schedules
+DROP POLICY IF EXISTS "doctor_schedules_manage_own" ON doctor_schedules;
 CREATE POLICY "doctor_schedules_manage_own"
     ON doctor_schedules
     FOR ALL
@@ -93,6 +98,7 @@ COMMENT ON POLICY "doctor_schedules_manage_own" ON doctor_schedules IS
 -- Old PHP: WHERE a.patient_id = ? (line 19)
 -- Old check: if (!isset($_SESSION['patient_id'])) redirect (line 8)
 -- New RLS: auth.uid() = patient_user_id replicates the WHERE clause
+DROP POLICY IF EXISTS "appointments_select_patient_own" ON appointments;
 CREATE POLICY "appointments_select_patient_own"
     ON appointments
     FOR SELECT
@@ -106,6 +112,7 @@ COMMENT ON POLICY "appointments_select_patient_own" ON appointments IS
 -- Old PHP: WHERE a.doctor_id = ? (line 19)
 -- Old check: if (!isset($_SESSION['doctor_id'])) redirect (line 8)
 -- New RLS: auth.uid() = doctor_user_id replicates the WHERE clause
+DROP POLICY IF EXISTS "appointments_select_doctor_own" ON appointments;
 CREATE POLICY "appointments_select_doctor_own"
     ON appointments
     FOR SELECT
@@ -120,6 +127,7 @@ COMMENT ON POLICY "appointments_select_doctor_own" ON appointments IS
 -- Old PHP: $patient_id = ($_SESSION['role'] === 'patient') ? $_SESSION['patient_id'] : null; (line 18)
 -- Old PHP: INSERT INTO appointments (patient_id, doctor_id, ...) VALUES (?, ?, ...) (line 135)
 -- New RLS: WITH CHECK (auth.uid() = patient_user_id) ensures patient can only book for themselves
+DROP POLICY IF EXISTS "appointments_insert_patient_own" ON appointments;
 CREATE POLICY "appointments_insert_patient_own"
     ON appointments
     FOR INSERT
@@ -135,6 +143,7 @@ COMMENT ON POLICY "appointments_insert_patient_own" ON appointments IS
 -- Old PHP: WHERE id = ? AND doctor_id = ? AND status = 'scheduled' (line 25)
 -- Old PHP: UPDATE appointments SET status = 'completed' WHERE id = ? (line 39)
 -- New RLS: USING (auth.uid() = doctor_user_id) replicates the WHERE doctor_id = ? check
+DROP POLICY IF EXISTS "appointments_update_doctor_own" ON appointments;
 CREATE POLICY "appointments_update_doctor_own"
     ON appointments
     FOR UPDATE
@@ -148,6 +157,7 @@ COMMENT ON POLICY "appointments_update_doctor_own" ON appointments IS
 -- Old PHP (book.php): UPDATE ... WHERE id = ? AND patient_id = ? (line 54)
 -- Old PHP (cancel.php): WHERE id = ? AND patient_id = ? AND status = 'scheduled' (line 27)
 -- New RLS: USING (auth.uid() = patient_user_id) ensures patients only update their own
+DROP POLICY IF EXISTS "appointments_update_patient_own" ON appointments;
 CREATE POLICY "appointments_update_patient_own"
     ON appointments
     FOR UPDATE
@@ -163,6 +173,7 @@ COMMENT ON POLICY "appointments_update_patient_own" ON appointments IS
 -- Old PHP: UPDATE appointments SET status = 'cancelled' WHERE id = ? (line 51)
 -- New RLS: USING (auth.uid() = patient_user_id) replicates the ownership check
 -- Note: In Supabase, we use DELETE for hard deletes or UPDATE status='cancelled' for soft deletes
+DROP POLICY IF EXISTS "appointments_delete_patient_own" ON appointments;
 CREATE POLICY "appointments_delete_patient_own"
     ON appointments
     FOR DELETE
@@ -175,6 +186,7 @@ COMMENT ON POLICY "appointments_delete_patient_own" ON appointments IS
 -- Maps to: cancel_appointment.php (lines 29-31)
 -- Old PHP: elseif ($_SESSION['role'] === 'doctor') WHERE id = ? AND doctor_id = ? (lines 29-31)
 -- New RLS: USING (auth.uid() = doctor_user_id) replicates the ownership check
+DROP POLICY IF EXISTS "appointments_delete_doctor_own" ON appointments;
 CREATE POLICY "appointments_delete_doctor_own"
     ON appointments
     FOR DELETE

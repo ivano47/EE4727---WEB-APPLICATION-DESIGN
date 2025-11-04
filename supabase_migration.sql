@@ -18,7 +18,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ============================================
 -- Replaces both patients and doctors tables
 -- Links to Supabase's built-in auth.users table
-CREATE TABLE profiles (
+CREATE TABLE IF NOT EXISTS profiles (
     id BIGSERIAL PRIMARY KEY,
     user_id UUID NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
     full_name VARCHAR(100) NOT NULL,
@@ -26,20 +26,22 @@ CREATE TABLE profiles (
     role VARCHAR(20) NOT NULL CHECK (role IN ('patient', 'doctor')),
     specialty VARCHAR(50),
     bio TEXT,
+    phone_number VARCHAR(20),
+    avatar_url TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Create indexes for performance
-CREATE INDEX idx_profiles_user_id ON profiles(user_id);
-CREATE INDEX idx_profiles_email ON profiles(email);
-CREATE INDEX idx_profiles_role ON profiles(role);
+CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
 
 -- ============================================
 -- Table: doctor_schedules
 -- ============================================
 -- Stores doctor availability by day and time
-CREATE TABLE doctor_schedules (
+CREATE TABLE IF NOT EXISTS doctor_schedules (
     id BIGSERIAL PRIMARY KEY,
     doctor_user_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     day_of_week VARCHAR(10) NOT NULL CHECK (day_of_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
@@ -49,14 +51,14 @@ CREATE TABLE doctor_schedules (
 );
 
 -- Create indexes for performance
-CREATE INDEX idx_doctor_schedules_doctor_user_id ON doctor_schedules(doctor_user_id);
-CREATE INDEX idx_doctor_schedules_day_of_week ON doctor_schedules(day_of_week);
+CREATE INDEX IF NOT EXISTS idx_doctor_schedules_doctor_user_id ON doctor_schedules(doctor_user_id);
+CREATE INDEX IF NOT EXISTS idx_doctor_schedules_day_of_week ON doctor_schedules(day_of_week);
 
 -- ============================================
 -- Table: appointments
 -- ============================================
 -- Updated to use UUID foreign keys referencing profiles.user_id
-CREATE TABLE appointments (
+CREATE TABLE IF NOT EXISTS appointments (
     id BIGSERIAL PRIMARY KEY,
     patient_user_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     doctor_user_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
@@ -67,10 +69,10 @@ CREATE TABLE appointments (
 );
 
 -- Create indexes for performance
-CREATE INDEX idx_appointments_patient_user_id ON appointments(patient_user_id);
-CREATE INDEX idx_appointments_doctor_user_id ON appointments(doctor_user_id);
-CREATE INDEX idx_appointments_appointment_time ON appointments(appointment_time);
-CREATE INDEX idx_appointments_status ON appointments(status);
+CREATE INDEX IF NOT EXISTS idx_appointments_patient_user_id ON appointments(patient_user_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_doctor_user_id ON appointments(doctor_user_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_appointment_time ON appointments(appointment_time);
+CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
 
 -- ============================================
 -- Trigger: Update updated_at timestamp
@@ -85,12 +87,14 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Apply trigger to profiles table
+DROP TRIGGER IF EXISTS update_profiles_updated_at ON profiles;
 CREATE TRIGGER update_profiles_updated_at
     BEFORE UPDATE ON profiles
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
 -- Apply trigger to appointments table
+DROP TRIGGER IF EXISTS update_appointments_updated_at ON appointments;
 CREATE TRIGGER update_appointments_updated_at
     BEFORE UPDATE ON appointments
     FOR EACH ROW
@@ -106,27 +110,32 @@ ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
 -- Users can read all profiles (to see doctors list)
+DROP POLICY IF EXISTS "Public profiles are viewable by everyone" ON profiles;
 CREATE POLICY "Public profiles are viewable by everyone"
     ON profiles FOR SELECT
     USING (true);
 
 -- Users can only update their own profile
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
 CREATE POLICY "Users can update own profile"
     ON profiles FOR UPDATE
     USING (auth.uid() = user_id);
 
 -- Users can insert their own profile (during registration)
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
 CREATE POLICY "Users can insert own profile"
     ON profiles FOR INSERT
     WITH CHECK (auth.uid() = user_id);
 
 -- Doctor schedules policies
 -- Anyone can view doctor schedules (for booking)
+DROP POLICY IF EXISTS "Doctor schedules are viewable by everyone" ON doctor_schedules;
 CREATE POLICY "Doctor schedules are viewable by everyone"
     ON doctor_schedules FOR SELECT
     USING (true);
 
 -- Only doctors can manage their own schedules
+DROP POLICY IF EXISTS "Doctors can manage own schedules" ON doctor_schedules;
 CREATE POLICY "Doctors can manage own schedules"
     ON doctor_schedules FOR ALL
     USING (
@@ -135,6 +144,7 @@ CREATE POLICY "Doctors can manage own schedules"
 
 -- Appointments policies
 -- Patients can view their own appointments
+DROP POLICY IF EXISTS "Patients can view own appointments" ON appointments;
 CREATE POLICY "Patients can view own appointments"
     ON appointments FOR SELECT
     USING (
@@ -143,11 +153,13 @@ CREATE POLICY "Patients can view own appointments"
     );
 
 -- Patients can create appointments
+DROP POLICY IF EXISTS "Patients can create appointments" ON appointments;
 CREATE POLICY "Patients can create appointments"
     ON appointments FOR INSERT
     WITH CHECK (auth.uid() = patient_user_id);
 
 -- Patients and doctors can update their appointments
+DROP POLICY IF EXISTS "Users can update their appointments" ON appointments;
 CREATE POLICY "Users can update their appointments"
     ON appointments FOR UPDATE
     USING (
@@ -156,6 +168,7 @@ CREATE POLICY "Users can update their appointments"
     );
 
 -- Only patients can cancel their own appointments
+DROP POLICY IF EXISTS "Patients can cancel own appointments" ON appointments;
 CREATE POLICY "Patients can cancel own appointments"
     ON appointments FOR DELETE
     USING (auth.uid() = patient_user_id);

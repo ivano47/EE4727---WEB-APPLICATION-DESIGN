@@ -91,7 +91,41 @@ export const AuthProvider = ({ children }) => {
               const data = await response.json();
               const userProfile = data && data.length > 0 ? data[0] : null;
               console.log('Profile fetch result:', userProfile);
-              setProfile(userProfile);
+              
+              // If no profile exists, try to create one from user metadata
+              if (!userProfile && session?.user) {
+                console.log('No profile found, attempting to create from user metadata...');
+                try {
+                  const userMeta = session.user.user_metadata || {};
+                  const profileData = {
+                    user_id: session.user.id,
+                    full_name: userMeta.full_name || userMeta.first_name + ' ' + userMeta.last_name || session.user.email,
+                    email: session.user.email,
+                    role: userMeta.role || 'patient',
+                    phone_number: userMeta.phone_number,
+                    date_of_birth: userMeta.date_of_birth
+                  };
+                  
+                  const { data: newProfile, error: insertError } = await supabase
+                    .from('profiles')
+                    .insert(profileData)
+                    .select()
+                    .single();
+                  
+                  if (!insertError && newProfile) {
+                    console.log('Profile created successfully:', newProfile);
+                    setProfile(newProfile);
+                  } else {
+                    console.error('Failed to create profile:', insertError);
+                    setProfile(null);
+                  }
+                } catch (createError) {
+                  console.error('Exception creating profile:', createError);
+                  setProfile(null);
+                }
+              } else {
+                setProfile(userProfile);
+              }
             } else {
               console.error('Profile fetch failed:', response.status);
               setProfile(null);
@@ -113,6 +147,39 @@ export const AuthProvider = ({ children }) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const signUp = async (email, password, userData) => {
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: userData
+        }
+      });
+
+      if (authError) throw authError;
+
+      return { data: authData, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
+
+  const signIn = async (email, password) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      return { data, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
 
   const signOut = async () => {
     console.log('signOut called in AuthContext');
@@ -158,7 +225,10 @@ export const AuthProvider = ({ children }) => {
     session,
     profile,
     loading,
+    signUp,
+    signIn,
     signOut,
+    refreshProfile: () => user && fetchProfile(user.id),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 function DoctorDashboard() {
   const [appointments, setAppointments] = useState([]);
@@ -170,6 +171,15 @@ function DoctorDashboard() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Doctor Dashboard</h1>
         <p className="text-lg text-gray-600">Manage your appointments and patient schedule</p>
+        <div className="flex space-x-4 mt-4"> {/* Added flex container */}
+          <Link
+            to="/profile"
+            className="bg-transparent border border-primary text-primary rounded-lg px-6 py-2 font-bold hover:bg-primary hover:text-white transition-all"
+          >
+            Edit Profile
+          </Link>
+          {/* Assuming there was a "Book New Appointment" button here, if not, this is where it would go. */}
+        </div>
       </div>
 
       {/* Stats Cards */}
