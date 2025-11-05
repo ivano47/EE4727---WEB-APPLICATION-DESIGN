@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
+import { sendAppointmentConfirmation, sendAppointmentReschedule } from '../services/emailService';
 
 function Schedule() {
   const [searchParams] = useSearchParams();
   const rescheduleId = searchParams.get('reschedule_id');
-  
+
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -15,7 +16,8 @@ function Schedule() {
   const [bookedSlots, setBookedSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+  const [existingAppointment, setExistingAppointment] = useState(null);
+
   const { user, profile } = useAuth();
   const navigate = useNavigate();
 
@@ -25,6 +27,13 @@ function Schedule() {
       navigate('/doctor-dashboard?error=doctors_cannot_book');
     }
   }, [profile, rescheduleId, navigate]);
+
+  // Fetch existing appointment if in reschedule mode
+  useEffect(() => {
+    if (rescheduleId) {
+      fetchExistingAppointment();
+    }
+  }, [rescheduleId]);
 
   // Fetch doctors
   useEffect(() => {
@@ -39,10 +48,44 @@ function Schedule() {
     }
   }, [selectedDoctor, selectedDate]);
 
+  const fetchExistingAppointment = async () => {
+    try {
+      console.log('Fetching existing appointment for reschedule...');
+
+      const { data, error } = await supabase
+        .from('appointments')
+        .select(`
+          *,
+          doctor:doctor_user_id (
+            full_name,
+            specialty
+          ),
+          patient:patient_user_id (
+            full_name,
+            email
+          )
+        `)
+        .eq('id', rescheduleId)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setExistingAppointment(data);
+        // Pre-select the doctor
+        setSelectedDoctor(data.doctor_user_id);
+        console.log('Loaded appointment for reschedule:', data);
+      }
+    } catch (error) {
+      console.error('Error fetching existing appointment:', error);
+      setError('Failed to load appointment details.');
+    }
+  };
+
   const fetchDoctors = async () => {
     try {
       console.log('Fetching doctors for schedule...');
-      
+
       // Add timeout for query
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Timeout')), 5000)
@@ -118,22 +161,99 @@ function Schedule() {
       setLoading(true);
       setError('');
 
-      const { error } = await supabase
-        .from('appointments')
-        .insert({
-          patient_user_id: user.id,
-          doctor_user_id: selectedDoctor,
-          appointment_time: appointmentTime,
-          status: 'scheduled'
+      const selectedDoctorData = doctors.find(d => d.user_id === selectedDoctor);
+
+      if (rescheduleId) {
+        // RESCHEDULE: Update existing appointment
+        const oldAppointmentTime = existingAppointment?.appointment_time;
+
+        // Determine who is rescheduling (patient or doctor)
+        const rescheduledBy = profile?.role === 'doctor' ? 'doctor' : 'patient';
+
+        const { error: updateError } = await supabase
+          .from('appointments')
+          .update({
+            appointment_time: appointmentTime,
+            status: 'scheduled', // Keep as scheduled
+            rescheduled_by: rescheduledBy // Track who rescheduled
+          })
+          .eq('id', rescheduleId);
+
+        if (updateError) throw updateError;
+
+        // Get patient email - ALWAYS send to the patient, not the doctor
+        let patientEmail, patientName;
+
+        if (profile?.role === 'doctor') {
+          // Doctor is rescheduling - send email to the patient
+          patientEmail = existingAppointment?.patient?.email;
+          patientName = existingAppointment?.patient?.full_name || 'Patient';
+
+          if (!patientEmail) {
+            console.error('Cannot send reschedule email: Patient email not found in appointment data');
+            alert('Appointment rescheduled successfully, but could not send email notification (patient email not found).');
+            navigate('/doctor-dashboard');
+            return;
+          }
+        } else {
+          // Patient is rescheduling - send email to themselves
+          patientEmail = user.email;
+          patientName = profile?.full_name || 'Patient';
+        }
+
+        // Send reschedule email with old and new times
+        sendAppointmentReschedule({
+          patientEmail: patientEmail,
+          patientName: patientName,
+          doctorName: selectedDoctorData?.full_name || 'Doctor',
+          appointmentTime: appointmentTime,
+          oldAppointmentTime: oldAppointmentTime,
+          specialty: selectedDoctorData?.specialty || 'General Practice',
+          rescheduledBy: rescheduledBy
+        }).then(result => {
+          if (result.success) {
+            console.log('Reschedule email sent successfully');
+          } else {
+            console.warn('Failed to send reschedule email:', result.error);
+          }
         });
 
-      if (error) throw error;
+        alert(`Appointment rescheduled successfully! Your new appointment is on ${new Date(appointmentTime).toLocaleString()}. A confirmation email has been sent to ${patientEmail}`);
+        navigate(profile?.role === 'doctor' ? '/doctor-dashboard' : '/my-dashboard');
+      } else {
+        // NEW BOOKING: Insert new appointment
+        const { error: bookingError } = await supabase
+          .from('appointments')
+          .insert({
+            patient_user_id: user.id,
+            doctor_user_id: selectedDoctor,
+            appointment_time: appointmentTime,
+            status: 'scheduled'
+          });
 
-      alert('Appointment booked successfully!');
-      navigate('/my-dashboard');
+        if (bookingError) throw bookingError;
+
+        // Send confirmation email to patient
+        sendAppointmentConfirmation({
+          patientEmail: user.email,
+          patientName: profile?.full_name || 'Patient',
+          doctorName: selectedDoctorData?.full_name || 'Doctor',
+          appointmentTime: appointmentTime,
+          specialty: selectedDoctorData?.specialty || 'General Practice'
+        }).then(result => {
+          if (result.success) {
+            console.log('Confirmation email sent successfully');
+          } else {
+            console.warn('Failed to send confirmation email:', result.error);
+          }
+        });
+
+        alert('Appointment booked successfully! A confirmation email has been sent to ' + user.email);
+        navigate('/my-dashboard');
+      }
     } catch (error) {
-      setError('Failed to book appointment. Please try again.');
-      console.error('Error booking appointment:', error);
+      setError(rescheduleId ? 'Failed to reschedule appointment. Please try again.' : 'Failed to book appointment. Please try again.');
+      console.error('Error with appointment:', error);
     } finally {
       setLoading(false);
     }
@@ -224,12 +344,32 @@ function Schedule() {
 
   return (
     <div className="container-custom py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">Schedule an Appointment</h1>
-      
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        {rescheduleId ? 'Reschedule Appointment' : 'Schedule an Appointment'}
+      </h1>
+
       {rescheduleId ? (
-        <p className="text-lg text-gray-600 mb-8">
-          You are rescheduling your appointment. Please select a new date and time.
-        </p>
+        <div className="mb-8">
+          <p className="text-lg text-gray-600 mb-2">
+            You are rescheduling your appointment. Please select a new date and time.
+          </p>
+          {existingAppointment && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+              <p className="font-semibold text-yellow-800">Current Appointment:</p>
+              <p className="text-yellow-700">
+                {existingAppointment.doctor?.full_name} - {new Date(existingAppointment.appointment_time).toLocaleString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
+                })}
+              </p>
+            </div>
+          )}
+        </div>
       ) : (
         <p className="text-lg text-gray-600 mb-8">
           Welcome, {profile?.full_name}! Select a doctor and date to view available time slots.

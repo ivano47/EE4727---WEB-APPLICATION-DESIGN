@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { sendAppointmentCancellation } from '../services/emailService';
 
 function DoctorDashboard() {
   const [appointments, setAppointments] = useState([]);
@@ -9,6 +10,7 @@ function DoctorDashboard() {
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all'); // all, today, upcoming
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -28,8 +30,14 @@ function DoctorDashboard() {
           patient:patient_user_id (
             full_name,
             email
+          ),
+          doctor:doctor_user_id (
+            full_name,
+            specialty,
+            email
           )
         `)
+        .eq('doctor_user_id', user.id)
         .order('appointment_time', { ascending: true });
 
       if (error) throw error;
@@ -65,17 +73,47 @@ function DoctorDashboard() {
   };
 
   const handleCancelAppointment = async (appointmentId) => {
-    if (!confirm('Are you sure you want to cancel this appointment?')) {
+    if (!confirm('Are you sure you want to cancel this appointment? The patient will be notified by email.')) {
       return;
     }
 
     try {
+      // Find the appointment to get details for email
+      const appointment = appointments.find(a => a.id === appointmentId);
+
+      if (!appointment) {
+        throw new Error('Appointment not found');
+      }
+
+      // Update appointment status and track who cancelled
       const { error } = await supabase
         .from('appointments')
-        .update({ status: 'cancelled' })
+        .update({
+          status: 'cancelled',
+          cancelled_by: 'doctor'
+        })
         .eq('id', appointmentId);
 
       if (error) throw error;
+
+      // Send cancellation email to patient
+      sendAppointmentCancellation({
+        patientEmail: appointment.patient?.email || '',
+        patientName: appointment.patient?.full_name || 'Patient',
+        doctorName: appointment.doctor?.full_name || 'Doctor',
+        appointmentTime: appointment.appointment_time,
+        cancelledBy: 'doctor'
+      }).then(result => {
+        if (result.success) {
+          console.log('Cancellation email sent to patient');
+        } else {
+          console.warn('Failed to send cancellation email:', result.error);
+        }
+      }).catch(error => {
+        console.error('Error sending cancellation email:', error);
+      });
+
+      alert('Appointment cancelled successfully. The patient has been notified by email.');
 
       // Refresh appointments list
       fetchAppointments();
@@ -86,8 +124,8 @@ function DoctorDashboard() {
   };
 
   const handleRescheduleAppointment = (appointmentId) => {
-    // TODO: Implement reschedule functionality
-    alert('Reschedule functionality coming soon!');
+    // Navigate to schedule page with reschedule mode
+    navigate(`/schedule?reschedule_id=${appointmentId}`);
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -282,7 +320,14 @@ function DoctorDashboard() {
                       {appointment.patient?.email || 'N/A'}
                     </td>
                     <td className="py-3 px-4 border-b">
-                      {getStatusBadge(appointment.status)}
+                      <div>
+                        {getStatusBadge(appointment.status)}
+                        {appointment.rescheduled_by && appointment.status === 'scheduled' && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            Rescheduled by {appointment.rescheduled_by === 'doctor' ? 'you' : 'patient'}
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td className="py-3 px-4 border-b">
                       {appointment.status === 'scheduled' &&
@@ -315,9 +360,14 @@ function DoctorDashboard() {
                           </div>
                         )}
                       {appointment.status === 'cancelled' && (
-                        <span className="text-gray-400 text-sm">
-                          Cancelled
-                        </span>
+                        <div className="text-gray-400 text-sm">
+                          <span>Cancelled</span>
+                          {appointment.cancelled_by && (
+                            <span className="block text-xs mt-1">
+                              by {appointment.cancelled_by === 'doctor' ? 'you' : 'patient'}
+                            </span>
+                          )}
+                        </div>
                       )}
                       {appointment.status === 'completed' && (
                         <span className="text-green-600 text-sm font-medium">

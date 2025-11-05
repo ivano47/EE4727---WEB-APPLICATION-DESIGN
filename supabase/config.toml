@@ -1,0 +1,11 @@
+# Supabase Configuration File
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+
+[functions.send-appointment-email]
+verify_jwt = false

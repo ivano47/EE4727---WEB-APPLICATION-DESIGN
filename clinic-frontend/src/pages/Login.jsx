@@ -9,14 +9,18 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   // Redirect if already logged in
   useEffect(() => {
-    if (user) {
-      navigate('/my-dashboard');
+    if (user && profile) {
+      if (profile.role === 'doctor') {
+        navigate('/doctor-dashboard');
+      } else {
+        navigate('/my-dashboard');
+      }
     }
-  }, [user, navigate]);
+  }, [user, profile, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,8 +35,26 @@ function Login() {
 
       if (error) throw error;
 
-      // Redirect to appropriate dashboard
-      navigate('/my-dashboard');
+      // Fetch user profile to determine role
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('user_id', data.user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        // Default to patient dashboard if profile fetch fails
+        navigate('/my-dashboard');
+        return;
+      }
+
+      // Redirect based on role
+      if (profileData?.role === 'doctor') {
+        navigate('/doctor-dashboard');
+      } else {
+        navigate('/my-dashboard');
+      }
     } catch (error) {
       setError(error.message || 'An error occurred during login');
     } finally {
