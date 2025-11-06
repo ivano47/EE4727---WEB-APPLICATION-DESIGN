@@ -125,7 +125,7 @@ export default function Home() {
           ))}
         </div>
         <div className="flex justify-center mt-10">
-          <Link to="/doctors" className="bg-transparent border border-primary text-primary rounded-lg px-6 py-3 font-bold hover:bg-primary hover:text-white transition-all">
+          <Link to="/our-doctors" className="bg-transparent border border-primary text-primary rounded-lg px-6 py-3 font-bold hover:bg-primary hover:text-white transition-all">
             View All Doctors
           </Link>
         </div>

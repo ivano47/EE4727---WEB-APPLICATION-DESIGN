@@ -17,6 +17,37 @@ export const AuthProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Helper function to fetch profile
+  const fetchProfile = async (userId, accessToken) => {
+    try {
+      const headers = {
+        'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      };
+
+      const response = await fetch(
+        `https://ctqtoxyqltydoxcwntgp.supabase.co/rest/v1/profiles?user_id=eq.${userId}&limit=1`,
+        { headers }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const userProfile = data && data.length > 0 ? data[0] : null;
+        setProfile(userProfile);
+        return userProfile;
+      } else {
+        console.error('Profile fetch failed:', response.status);
+        setProfile(null);
+        return null;
+      }
+    } catch (err) {
+      console.error('Exception fetching profile:', err);
+      setProfile(null);
+      return null;
+    }
+  };
+
   useEffect(() => {
     // Start by setting loading to true
     setLoading(true);
@@ -28,31 +59,8 @@ export const AuthProvider = ({ children }) => {
       setUser(session?.user ?? null);
 
       if (session) {
-        // 2. If a session exists, fetch the user's profile using direct fetch
-        try {
-          const headers = {
-            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json'
-          };
-
-          const response = await fetch(
-            `https://ctqtoxyqltydoxcwntgp.supabase.co/rest/v1/profiles?user_id=eq.${session.user.id}&limit=1`,
-            { headers }
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            const userProfile = data && data.length > 0 ? data[0] : null;
-            setProfile(userProfile);
-          } else {
-            console.error('Profile fetch failed:', response.status);
-            setProfile(null);
-          }
-        } catch (err) {
-          console.error('Exception fetching profile:', err);
-          setProfile(null);
-        }
+        // 2. If a session exists, fetch the user's profile
+        await fetchProfile(session.user.id, session.access_token);
       } else {
         setProfile(null);
       }
@@ -69,70 +77,46 @@ export const AuthProvider = ({ children }) => {
         setUser(session?.user ?? null);
 
         console.log('Checking event condition - event:', event, 'has session:', !!session);
-        
+
         if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED')) {
-          // User has a session, fetch their profile using direct fetch
+          // User has a session, fetch their profile
           console.log('✅ Fetching profile for user:', session.user.id);
           setLoading(true);
-          
-          try {
-            const headers = {
-              'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${session.access_token}`,
-              'Content-Type': 'application/json'
-            };
 
-            const response = await fetch(
-              `https://ctqtoxyqltydoxcwntgp.supabase.co/rest/v1/profiles?user_id=eq.${session.user.id}&limit=1`,
-              { headers }
-            );
+          const userProfile = await fetchProfile(session.user.id, session.access_token);
+          console.log('Profile fetch result:', userProfile);
 
-            if (response.ok) {
-              const data = await response.json();
-              const userProfile = data && data.length > 0 ? data[0] : null;
-              console.log('Profile fetch result:', userProfile);
-              
-              // If no profile exists, try to create one from user metadata
-              if (!userProfile && session?.user) {
-                console.log('No profile found, attempting to create from user metadata...');
-                try {
-                  const userMeta = session.user.user_metadata || {};
-                  const profileData = {
-                    user_id: session.user.id,
-                    full_name: userMeta.full_name || userMeta.first_name + ' ' + userMeta.last_name || session.user.email,
-                    email: session.user.email,
-                    role: userMeta.role || 'patient',
-                    phone_number: userMeta.phone_number,
-                    date_of_birth: userMeta.date_of_birth
-                  };
-                  
-                  const { data: newProfile, error: insertError } = await supabase
-                    .from('profiles')
-                    .insert(profileData)
-                    .select()
-                    .single();
-                  
-                  if (!insertError && newProfile) {
-                    console.log('Profile created successfully:', newProfile);
-                    setProfile(newProfile);
-                  } else {
-                    console.error('Failed to create profile:', insertError);
-                    setProfile(null);
-                  }
-                } catch (createError) {
-                  console.error('Exception creating profile:', createError);
-                  setProfile(null);
-                }
+          // If no profile exists, try to create one from user metadata
+          if (!userProfile && session?.user) {
+            console.log('No profile found, attempting to create from user metadata...');
+            try {
+              const userMeta = session.user.user_metadata || {};
+              const profileData = {
+                user_id: session.user.id,
+                full_name: userMeta.full_name || userMeta.first_name + ' ' + userMeta.last_name || session.user.email,
+                email: session.user.email,
+                role: userMeta.role || 'patient',
+                phone_number: userMeta.phone_number,
+                date_of_birth: userMeta.date_of_birth
+              };
+
+              const { data: newProfile, error: insertError } = await supabase
+                .from('profiles')
+                .insert(profileData)
+                .select()
+                .single();
+
+              if (!insertError && newProfile) {
+                console.log('Profile created successfully:', newProfile);
+                setProfile(newProfile);
               } else {
-                setProfile(userProfile);
+                console.error('Failed to create profile:', insertError);
+                setProfile(null);
               }
-            } else {
-              console.error('Profile fetch failed:', response.status);
+            } catch (createError) {
+              console.error('Exception creating profile:', createError);
               setProfile(null);
             }
-          } catch (err) {
-            console.error('Exception fetching profile:', err);
-            setProfile(null);
           }
           setLoading(false);
         } else if (event === 'SIGNED_OUT' || !session) {
@@ -228,7 +212,12 @@ export const AuthProvider = ({ children }) => {
     signUp,
     signIn,
     signOut,
-    refreshProfile: () => user && fetchProfile(user.id),
+    refreshProfile: async () => {
+      if (user && session) {
+        return await fetchProfile(user.id, session.access_token);
+      }
+      return null;
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
